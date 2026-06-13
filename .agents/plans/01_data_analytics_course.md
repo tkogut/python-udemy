@@ -1,7 +1,7 @@
-# [SEQ-PRO] Plan 01: Kurs Analityki Danych dla Ekonomistów (WSL Integration)
+# [SEQ-PRO] Plan 01: Kurs Analityki Danych dla Ekonomistów (WSL & Antigravity)
 
 ## 1. STRATEGIA & CEL
-Przygotowanie interaktywnego CLI do nauki Pythona i Pandas pod kątem analizy danych ekonomicznych i finansowych dla studenta Analityki Gospodarczej, z pełnym wykorzystaniem środowiska WSL (Windows Subsystem for Linux) jako standardu rynkowego.
+Przygotowanie interaktywnego CLI do nauki Pythona i Pandas pod kątem analizy danych ekonomicznych i finansowych dla studenta Analityki Gospodarczej, z pełnym wykorzystaniem środowiska WSL (Windows Subsystem for Linux) oraz asystenta programistycznego Antigravity (Agents-OS v5.0).
 
 ## 2. MODUŁY KURSU
 ### Moduł 1: Składnia Python w Modelach Ekonomicznych
@@ -30,8 +30,8 @@ Przygotowanie interaktywnego CLI do nauki Pythona i Pandas pod kątem analizy da
 - **Zadanie**: Analiza szeregów czasowych indeksu giełdowego, CAGR i elastyczności cenowej popytu.
 
 ## 3. HARMONOGRAM WDROŻENIA ŚRODOWISKA
-1. **Plan & Backlog**: Utworzenie `task.md` i planu szkolenia z naciskiem na środowisko WSL.
+1. **Plan & Backlog**: Utworzenie `task.md` i planu szkolenia z naciskiem na środowisko WSL i asystę Antigravity.
 2. **Architektura CLI**: `start_course.py` do nawigacji po lekcjach i zadaniach.
 3. **Stan Kursu**: Obsługa stanu w `.agents/course_state.json`.
 4. **Zadania & Testy**: Implementacja szablonów zadań i testów jednostkowych (pytest) dla modułów 1-3.
-5. **Instrukcje Uruchomienia**: README.md z dedykowanymi instrukcjami konfiguracji WSL (Ubuntu), gh/git oraz integracji z Agents-OS.
+5. **Instrukcje Uruchomienia**: README.md z dedykowanymi instrukcjami konfiguracji WSL (Ubuntu), pracy z Antigravity, gh/git oraz integracji z Agents-OS.
