@@ -6,4 +6,5 @@
 - [x] Task 4: Szablony lekcji i zadań dla Modułów 1, 2, 3 (Builder) <!-- id: 4 -->
 - [x] Task 5: Implementacja testów automatycznych weryfikacji zadań dla Modułów 1, 2, 3 (Auditor) <!-- id: 5 -->
 - [x] Task 6: Integracja asystenta CLI z instrukcjami uruchomienia Agents-OS oraz gh cli (Builder) <!-- id: 6 -->
-- [x] Task 7: Finalny audyt i weryfikacja poprawności (Auditor) <!-- id: 7 -->
+- [x] Task 7: Dodanie prostych zadań wprowadzających (Hello World, PKB) w Module 1 (Builder) <!-- id: 8 -->
+- [x] Task 8: Finalny audyt i weryfikacja poprawności (Auditor) <!-- id: 7 -->

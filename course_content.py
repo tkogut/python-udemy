@@ -5,48 +5,142 @@ COURSE_DATA = {
         "title": "Moduł 1: Składnia Python w Modelach Ekonomicznych",
         "tasks": {
             1: {
+                "title": "Witaj w Pythonie (Hello World & Zmienne)",
+                "lesson": """
+Witaj w Module 1! Zaczynamy od absolutnych podstaw programowania.
+Pierwszym krokiem każdego programisty jest napisanie programu, który wita się ze światem ("Hello, World!").
+Dodatkowo poznasz pojęcie zmiennych – to jak szufladki w pamięci komputera, w których przechowujemy dane, np. wartości ekonomiczne.
+
+Twoim zadaniem jest zaimplementowanie dwóch funkcji w pliku exercises/module_1/task_1.py:
+1. `hello_world()` - funkcja ma zwracać tekst "Hello, World!".
+2. `get_gdp_value()` - funkcja ma tworzyć zmienną `gdp` o wartości 1500.0 (liczba zmiennoprzecinkowa) i ją zwracać.
+""",
+                "theory": """
+=== Podstawy programowania w Pythonie ===
+
+1. Funkcja print() i zwracanie wartości (return):
+   Funkcje to wydzielone fragmenty kodu. Słowo kluczowe `return` przekazuje wynik działania funkcji na zewnątrz.
+   W Pythonie teksty zapisujemy w cudzysłowach (np. "Hello, World!" lub 'Hello, World!').
+   Przykład funkcji zwracającej tekst:
+   def przywitanie():
+       return "Witaj!"
+
+2. Zmienne (Variables) i Typy Danych:
+   Zmienna to nazwa, pod którą przechowujemy dane. Nazwę zmiennej piszemy małymi literami (np. `gdp` lub `inflacja`).
+   W Pythonie mamy różne typy danych:
+   - int (liczby całkowite, np. `rok = 2026`)
+   - float (liczby rzeczywiste/zmiennoprzecinkowe, np. `gdp = 1500.0`)
+   - str (tekst, np. `kraj = "Polska"`)
+
+   Aby przypisać wartość do zmiennej, używamy znaku `=`:
+   inflacja = 2.5
+   return inflacja
+""",
+                "hint": """
+Wskazówki implementacyjne:
+- `hello_world()`: Wpisz linijkę `return "Hello, World!"`.
+- `get_gdp_value()`:
+  1. Stwórz zmienną: `gdp = 1500.0`
+  2. Zwróć ją: `return gdp`
+""",
+                "template": """# -*- coding: utf-8 -*-
+
+def hello_world() -> str:
+    \"\"\"
+    Zwraca tekst "Hello, World!".
+    \"\"\"
+    # TWÓJ KOD TUTAJ
+    pass
+
+def get_gdp_value() -> float:
+    \"\"\"
+    Tworzy zmienną gdp o wartości 1500.0 i ją zwraca.
+    \"\"\"
+    # TWÓJ KOD TUTAJ
+    pass
+""",
+                "exercise_path": "exercises/module_1/task_1.py",
+                "test_path": ".agents/tests/test_module_1.py"
+            },
+            2: {
+                "title": "Podstawowe Operacje Matematyczne (Model PKB)",
+                "lesson": """
+Wspaniale! Teraz poćwiczymy podstawowe operacje matematyczne.
+W ekonomii jednym z podstawowych modeli jest tożsamość PKB (metoda wydatkowa):
+PKB = C + I + G + (X - M)
+Gdzie:
+- C: Konsumpcja (Consumption)
+- I: Inwestycje (Investment)
+- G: Wydatki rządowe (Government spending)
+- X: Eksport (Exports)
+- M: Import (Imports)
+Różnica (X - M) to eksport netto.
+
+Twoim zadaniem jest uzupełnienie funkcji `calculate_gdp(c, i, g, x, m)` w exercises/module_1/task_2.py, która obliczy i zwróci wartość PKB na podstawie przekazanych parametrów.
+""",
+                "theory": """
+=== Operacje matematyczne w Pythonie ===
+
+Python pozwala wykonywać standardowe działania matematyczne:
+- dodawanie: `+`
+- odejmowanie: `-`
+- mnożenie: `*`
+- dzielenie: `/`
+
+Kolejność wykonywania działań jest taka sama jak w matematyce. Możesz używać nawiasów okrągłych `()`, aby kontrolować kolejność operacji:
+wynik = a + b + c + (d - e)
+""",
+                "hint": """
+Wskazówki implementacyjne:
+Wewnątrz funkcji `calculate_gdp(c, i, g, x, m)` wpisz linijkę:
+`return c + i + g + (x - m)`
+""",
+                "template": """# -*- coding: utf-8 -*-
+
+def calculate_gdp(c: float, i: float, g: float, x: float, m: float) -> float:
+    \"\"\"
+    Oblicza PKB ze wzoru: C + I + G + (X - M)
+    \"\"\"
+    # TWÓJ KOD TUTAJ
+    pass
+""",
+                "exercise_path": "exercises/module_1/task_2.py",
+                "test_path": ".agents/tests/test_module_1_2.py"
+            },
+            3: {
                 "title": "Kalkulator NPV i Wartości Pieniądza w Czasie",
                 "lesson": """
-Witaj w Module 1! W ekonomii kluczowym pojęciem jest wartość pieniądza w czasie (Time Value of Money - TVM).
+Teraz jesteś gotowy na trudniejsze zadanie! Wykorzystamy pętle i listy w modelu wartości pieniądza w czasie.
 Wzory:
 1. Future Value (FV): FV = PV * (1 + r)^n
 2. Present Value (PV): PV = FV / (1 + r)^n
 3. Net Present Value (NPV): NPV = suma_{t=0}^{N} (CF_t / (1 + r)^t)
-   gdzie CF_0 to zazwyczaj nakład początkowy (wartość ujemna).
+   gdzie CF_0 to nakład początkowy (wartość ujemna).
 
-Twoim zadaniem jest zaimplementowanie tych trzech funkcji w pliku exercises/module_1/task_1.py.
+Twoim zadaniem jest zaimplementowanie tych trzech funkcji w pliku exercises/module_1/task_3.py.
 """,
                 "theory": """
 === Podstawy składni Pythona dla Modelu NPV ===
 
-1. Zmienne (Variables):
-   Zmienne przechowują wartości, np. stopa dyskontowa:
-   r = 0.05
-   Zmienne w Pythonie nie wymagają deklaracji typu – interpreter sam rozpoznaje typ.
+1. Pętle (Loops) i Listy (Lists):
+   Pętla `for` pozwala powtarzać czynności.
+   Funkcja `enumerate(lista)` zwraca pary: (indeks, wartość).
+   Przykład:
+   for t, cf in enumerate(cash_flows):
+       # t to rok (0, 1, 2...), cf to przepływ w tym roku.
 
 2. Potęgowanie:
    W Pythonie potęgowanie zapisujemy jako podwójną gwiazdkę `**`:
    mnożnik = (1 + r) ** n
-
-3. Lista (List):
-   Kolekcja elementów w nawiasach kwadratowych. Przechowuje przepływy pieniężne (Cash Flows):
-   cash_flows = [-1000, 300, 400, 500]
-   Pierwszy element ma indeks 0: cash_flows[0] wynosi -1000.
-
-4. Pętla for i funkcja enumerate():
-   Pozwala przechodzić przez elementy listy i pobierać jednocześnie ich indeks (czas t) oraz wartość (przepływ CF):
-   for t, cf in enumerate(cash_flows):
-       # t to indeks (rok, np. 0, 1, 2...), a cf to wartość (np. -1000, 300...)
-       wartosc_zdyskontowana = cf / ((1 + r) ** t)
 """,
                 "hint": """
 Wskazówki implementacyjne:
 - `calculate_fv(pv, r, n)`: Zwróć `pv * ((1 + r) ** n)`.
 - `calculate_pv(fv, r, n)`: Zwróć `fv / ((1 + r) ** n)`.
 - `calculate_npv(cash_flows, r)`: 
-  1. Stwórz zmienną sumującą, np. `npv_sum = 0.0`.
+  1. Stwórz zmienną sumującą: `npv_sum = 0.0`.
   2. Użyj pętli: `for t, cf in enumerate(cash_flows):`
-  3. Wewnątrz pętli dodaj zdyskontowaną wartość do sumy: `npv_sum += cf / ((1 + r) ** t)`.
+  3. Dodaj zdyskontowaną wartość do sumy: `npv_sum += cf / ((1 + r) ** t)`.
   4. Zwróć `npv_sum`.
 """,
                 "template": """# -*- coding: utf-8 -*-
@@ -54,9 +148,6 @@ Wskazówki implementacyjne:
 def calculate_fv(pv: float, r: float, n: int) -> float:
     \"\"\"
     Oblicza Future Value (Wartość Przyszłą).
-    pv - Present Value (Wartość Obecna)
-    r  - roczna stopa procentowa (np. 0.05 dla 5%)
-    n  - liczba okresów (lat)
     \"\"\"
     # TWÓJ KOD TUTAJ
     pass
@@ -64,9 +155,6 @@ def calculate_fv(pv: float, r: float, n: int) -> float:
 def calculate_pv(fv: float, r: float, n: int) -> float:
     \"\"\"
     Oblicza Present Value (Wartość Obecną).
-    fv - Future Value (Wartość Przyszła)
-    r  - roczna stopa procentowa (np. 0.05 dla 5%)
-    n  - liczba okresów (lat)
     \"\"\"
     # TWÓJ KOD TUTAJ
     pass
@@ -74,14 +162,12 @@ def calculate_pv(fv: float, r: float, n: int) -> float:
 def calculate_npv(cash_flows: list, r: float) -> float:
     \"\"\"
     Oblicza Net Present Value (Wartość Bieżącą Netto).
-    cash_flows - lista przepływów pieniężnych (indeks 0 to nakład początkowy, np. -1000)
-    r          - stopa dyskontowa (np. 0.08 dla 8%)
     \"\"\"
     # TWÓJ KOD TUTAJ
     pass
 """,
-                "exercise_path": "exercises/module_1/task_1.py",
-                "test_path": ".agents/tests/test_module_1.py"
+                "exercise_path": "exercises/module_1/task_3.py",
+                "test_path": ".agents/tests/test_module_1_3.py"
             }
         }
     },
@@ -132,7 +218,7 @@ Wskazówki implementacyjne:
    `df = pd.DataFrame({'price': prices})`
 2. Oblicz prostą stopę zwrotu:
    `df['simple_return'] = df['price'].pct_change()`
-3. Oblicz logarytmiczną stopę zwrotu za pomocą NumPy:
+3. Oblicz logarytmiczna stopę zwrotu za pomocą NumPy:
    `df['log_return'] = np.log(df['price'] / df['price'].shift(1))`
 4. Wylicz statystyki:
    `mean_return = df['simple_return'].mean()`
