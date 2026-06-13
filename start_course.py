@@ -78,6 +78,18 @@ def get_next_task(module, task):
             
     return None, None
 
+def ensure_exercise_exists(state):
+    mod = state["current_module"]
+    task = state["current_task"]
+    if mod in COURSE_DATA and task in COURSE_DATA[mod]["tasks"]:
+        task_data = COURSE_DATA[mod]["tasks"][task]
+        ex_path = task_data["exercise_path"]
+        if not os.path.exists(ex_path):
+            os.makedirs(os.path.dirname(ex_path), exist_ok=True)
+            with open(ex_path, 'w', encoding='utf-8') as f:
+                f.write(task_data["template"])
+            print("\033[94m[INFO] Wygenerowano szablon zadania w: {}\033[0m".format(ex_path))
+
 def display_lesson(state):
     mod = state["current_module"]
     task = state["current_task"]
@@ -93,21 +105,49 @@ def display_lesson(state):
     lesson_text = task_data["lesson"]
     ex_path = task_data["exercise_path"]
     
-    # Generowanie szablonu zadania, jeśli nie istnieje
-    if not os.path.exists(ex_path):
-        os.makedirs(os.path.dirname(ex_path), exist_ok=True)
-        with open(ex_path, 'w', encoding='utf-8') as f:
-            f.write(task_data["template"])
-        print("\033[94m[INFO] Wygenerowano szablon zadania w: {}\033[0m".format(ex_path))
+    ensure_exercise_exists(state)
         
-    print("=" * 60)
+    print("\n" + "=" * 60)
     print("\033[96m{}\033[0m".format(module_title))
     print("\033[93mZadanie {}.{}: {}\033[0m".format(mod, task, task_title))
     print("=" * 60)
     print(lesson_text.strip())
     print("-" * 60)
     print("Lokalizacja zadania do edycji: \033[94m{}\033[0m".format(ex_path))
-    print("Weryfikacja rozwiązania:      \033[93mpython start_course.py --verify\033[0m")
+    print("=" * 60)
+
+def display_theory(state):
+    mod = state["current_module"]
+    task = state["current_task"]
+    
+    if mod not in COURSE_DATA or task not in COURSE_DATA[mod]["tasks"]:
+        print("\n[INFO] Brak aktywnego modułu do wyświetlenia teorii.")
+        return
+        
+    task_data = COURSE_DATA[mod]["tasks"][task]
+    theory_text = task_data.get("theory", "Brak dedykowanej teorii do tego zadania.")
+    
+    print("\n" + "=" * 60)
+    print("\033[95mWPROWADZENIE TEORETYCZNE & PODSTAWY PYTHONA\033[0m")
+    print("=" * 60)
+    print(theory_text.strip())
+    print("=" * 60)
+
+def display_hint(state):
+    mod = state["current_module"]
+    task = state["current_task"]
+    
+    if mod not in COURSE_DATA or task not in COURSE_DATA[mod]["tasks"]:
+        print("\n[INFO] Brak aktywnego zadania.")
+        return
+        
+    task_data = COURSE_DATA[mod]["tasks"][task]
+    hint_text = task_data.get("hint", "Brak wskazówek do tego zadania.")
+    
+    print("\n" + "=" * 60)
+    print("\033[93mWSKAZÓWKA DO KODU\033[0m")
+    print("=" * 60)
+    print(hint_text.strip())
     print("=" * 60)
 
 def verify_solution(state):
@@ -129,7 +169,6 @@ def verify_solution(state):
         return
         
     # Uruchomienie testów przez pytest
-    # Zapisujemy wyjście do logów w celu uproszczenia widoku dla ucznia
     cmd = [sys.executable, "-m", "pytest", test_path, "-v"]
     result = subprocess.run(cmd, capture_output=True, text=True)
     
@@ -154,19 +193,16 @@ def verify_solution(state):
             print("\033[92m[SUKCES] Wszystkie moduły ukończone!\033[0m")
             
         save_state(state)
-        display_lesson(state)
     else:
         print("\033[91m[BŁĄD] Testy nie przeszły. Sprawdź swój kod w: {}\033[0m".format(ex_path))
         print("Szczegółowe informacje o błędzie zostały zapisane w: \033[93m{}\033[0m".format(LOG_FILE))
         print("\nSkrócony błąd:")
-        # Wyciągamy ostatnie kilka linii z raportu pytest
         lines = result.stdout.splitlines()
         failures = [l for l in lines if l.startswith("FAIL") or "AssertionError" in l or "Error:" in l]
         if failures:
             for f_line in failures[-5:]:
                 print("  " + f_line)
         else:
-            # Pokaż ostatnie 10 linii wyjścia
             for l in lines[-10:]:
                 print("  " + l)
         print("-" * 60)
@@ -198,10 +234,9 @@ def display_status(state):
     progress_pct = (completed_count / total_tasks * 100) if total_tasks > 0 else 0
     print("Postęp ogólny: {:.1f}% ({}/{} zadań)".format(progress_pct, completed_count, total_tasks))
     print("=" * 60)
-    display_git_instructions()
 
 def display_git_instructions():
-    print("\n\033[95mINSTRUKCJE INTEGRACJI (Git / GitHub / Agents-OS)\033[0m")
+    print("\n\033[95mINSTRUKCJE INTEGRACJI (Git / GitHub)\033[0m")
     print("-" * 60)
     print("1. Aby sprawdzić status zmian w repozytorium:")
     print("   \033[93mgit status\033[0m")
@@ -209,10 +244,20 @@ def display_git_instructions():
     print("   \033[93mgit add .\033[0m")
     print("   \033[93mgit commit -m \"feat: completed data analytics module\"\033[0m")
     print("   \033[93mgh pr create --title \"Completed Module\" --body \"Check my solutions\"\033[0m")
-    print("3. Integracja z Agents-OS:")
-    print("   Po sklonowaniu repozytorium uruchom agenta Antigravity w tym folderze.")
-    print("   Używaj poleceń w terminalu repozytorium, aby uczyć się wspólnie z agentem.")
-    print("-" * 60 + "\n")
+    print("-" * 60)
+
+def display_ai_instructions():
+    print("\n" + "=" * 60)
+    print("\033[95mPOMOC AGENTA AI (ANTIGRAVITY)\033[0m")
+    print("=" * 60)
+    print("Pracujesz w parze z agentem Antigravity. Jeśli utkniesz:")
+    print("1. Otwórz okno czatu z Antigravity.")
+    print("2. Poproś go o pomoc, np.:")
+    print("   - 'Antigravity, wytłumacz mi dokładniej teorię do Zadania 1.1'")
+    print("   - 'Antigravity, pomóż mi zrozumieć błędy z pliku .agents/test_run.log'")
+    print("   - 'Antigravity, co to jest list comprehension w Pythonie?'")
+    print("3. Agent ma pełen wgląd w Twoje postępy i pliki zadania, więc pomoże Ci bez konieczności kopiowania kodu.")
+    print("=" * 60)
 
 def reset_course():
     state = {
@@ -223,6 +268,60 @@ def reset_course():
     save_state(state)
     print("\033[93m[INFO] Stan kursu został zresetowany do Modułu 1 Zadania 1.\033[0m")
     return state
+
+def interactive_menu(state):
+    ensure_exercise_exists(state)
+    while True:
+        mod = state["current_module"]
+        task = state["current_task"]
+        
+        # Jeśli ukończono wszystkie zadania
+        if mod == 999:
+            print("\n\033[92m[GRATULACJE] Ukończyłeś wszystkie dostępne zadania w kursie!\033[0m")
+            display_git_instructions()
+            break
+            
+        task_data = COURSE_DATA[mod]["tasks"][task]
+        task_title = task_data["title"]
+        
+        print("\n" + "=" * 60)
+        print("\033[96mAKTYWNE ZADANIE: {}.{} - {}\033[0m".format(mod, task, task_title))
+        print("=" * 60)
+        print("Wybierz opcję:")
+        print("  \033[93m1.\033[0m [Lekcja] Pokaż opis zadania i cele")
+        print("  \033[93m2.\033[0m [Teoria] Wyjaśnij podstawy i pojęcia teoretyczne")
+        print("  \033[93m3.\033[0m [Wskazówka] Daj mi wskazówkę do kodu")
+        print("  \033[93m4.\033[0m [Weryfikacja] Sprawdź moje rozwiązanie")
+        print("  \033[93m5.\033[0m [Status] Zobacz mój ogólny postęp")
+        print("  \033[93m6.\033[0m [Pomoc AI] Jak pracować z agentem Antigravity")
+        print("  \033[93m7.\033[0m Wyjście")
+        print("=" * 60)
+        
+        try:
+            choice = input("\nWpisz numer opcji (1-7): ").strip()
+        except (KeyboardInterrupt, EOFError):
+            print("\nDo zobaczenia! Kontynuuj naukę w wolnej chwili.")
+            break
+            
+        if choice == "1":
+            display_lesson(state)
+        elif choice == "2":
+            display_theory(state)
+        elif choice == "3":
+            display_hint(state)
+        elif choice == "4":
+            verify_solution(state)
+            state = load_state()  # przeładuj zmieniony stan
+        elif choice == "5":
+            display_status(state)
+            display_git_instructions()
+        elif choice == choice == "6":
+            display_ai_instructions()
+        elif choice == "7":
+            print("\nDo zobaczenia! Kontynuuj naukę w wolnej chwili.")
+            break
+        else:
+            print("\n\033[91m[BŁĄD] Nieprawidłowy wybór. Wybierz liczbę od 1 do 7.\033[0m")
 
 def main():
     parser = argparse.ArgumentParser(description="Asystent Kursu Python dla Ekonomistów CLI")
@@ -241,8 +340,9 @@ def main():
         verify_solution(state)
     elif args.status:
         display_status(state)
+        display_git_instructions()
     else:
-        display_lesson(state)
+        interactive_menu(state)
 
 if __name__ == "__main__":
     main()
