@@ -171,58 +171,151 @@ def calculate_npv(cash_flows: list, r: float) -> float:
         }
     },
     2: {
-        "title": "Moduł 2: Wprowadzenie do Pandas & NumPy",
+        "title": "Moduł 2: Kontrola Przepływu, Słowniki & Serializacja JSON",
+        "tasks": {
+            1: {
+                "title": "Klasyfikacja poziomu dochodów (If-Elif-Else)",
+                "lesson": """
+Witaj w Module 2!
+W pracy analityka często musisz grupować dane na podstawie progów wartościowych.
+Twoim zadaniem jest napisanie funkcji `classify_income(income)`, która zwróci klasyfikację tekstową:
+- Dla dochodu poniżej 30000 -> "Niski"
+- Dla dochodu od 30000 do 85000 (wyłącznie) -> "Średni"
+- Dla dochodu 85000 i powyżej -> "Wysoki"
+
+Kod uzupełnij w exercises/module_2/task_1.py.
+""",
+                "theory": """
+=== Instrukcje warunkowe (if-elif-else) ===
+
+Instrukcje warunkowe sterują przepływem programu na podstawie testów logicznych:
+```python
+if income < 30000:
+    return "Niski"
+elif income < 85000:
+    return "Średni"
+else:
+    return "Wysoki"
+```
+""",
+                "hint": """
+Użyj standardowych operatorów porównania: `<` oraz `>=`. Warunek `elif` sprawdzany jest tylko wtedy, gdy poprzedni `if` był fałszywy.
+""",
+                "template": """# -*- coding: utf-8 -*-
+
+def classify_income(income: float) -> str:
+    \"\"\"
+    Klasyfikuje dochód do jednej z trzech kategorii: "Niski", "Średni", "Wysoki".
+    \"\"\"
+    # TWÓJ KOD TUTAJ
+    pass
+""",
+                "exercise_path": "exercises/module_2/task_1.py",
+                "test_path": ".agents/tests/test_module_2_1.py"
+            },
+            2: {
+                "title": "Zarządzanie kartoteką klientów (Słowniki)",
+                "lesson": """
+Witaj w zadaniu 2.2!
+Słowniki (`dict`) w Pythonie przechowują pary klucz-wartość. To fundamentalna struktura przy indeksowaniu danych obiektów biznesowych.
+Napisz funkcję `manage_clients(clients, client_id, action, name=None)`, która:
+- Dla `action` równego "add": dodaje do słownika `clients` klucz `client_id` z wartością `name` i zwraca słownik.
+- Dla `action` równego "remove": usuwa klucz `client_id` ze słownika i zwraca go (usuwaj bezpiecznie za pomocą `.pop()`).
+
+Kod uzupełnij w exercises/module_2/task_2.py.
+""",
+                "theory": """
+=== Praca ze słownikami (dict) ===
+
+Słownik to zestaw unikalnych kluczy przypisanych do wartości:
+- Dodanie/modyfikacja elementu: `slownik[klucz] = wartosc`
+- Bezpieczne usuwanie klucza: `slownik.pop(klucz, domyslna_wartosc)`
+""",
+                "hint": """
+Wskazówki implementacyjne:
+```python
+if action == "add":
+    clients[client_id] = name
+elif action == "remove":
+    clients.pop(client_id, None)
+return clients
+```
+""",
+                "template": """# -*- coding: utf-8 -*-
+
+def manage_clients(clients: dict, client_id: int, action: str, name: str = None) -> dict:
+    \"\"\"
+    Dodaje lub usuwa klienta ze słownika na podstawie podanej akcji.
+    \"\"\"
+    # TWÓJ KOD TUTAJ
+    pass
+""",
+                "exercise_path": "exercises/module_2/task_2.py",
+                "test_path": ".agents/tests/test_module_2_2.py"
+            },
+            3: {
+                "title": "Serializacja i Zapis do JSON",
+                "lesson": """
+Witaj w zadaniu 2.3!
+JSON to standardowy format wymiany danych biznesowych w Internecie i API.
+Napisz funkcję `serialize_and_save(data, filepath)`, która serializuje słownik `data` do formatu JSON i zapisuje go w pliku o ścieżce `filepath`.
+
+Kod uzupełnij w exercises/module_2/task_3.py.
+""",
+                "theory": """
+=== Praca z modułem json ===
+
+Python posiada wbudowany moduł `json`:
+- `json.dumps(obj)` – zamienia obiekt na ciąg znaków w formacie JSON.
+- `json.dump(obj, file)` – zapisuje obiekt bezpośrednio do pliku.
+
+Przykład zapisu do pliku:
+```python
+with open(filepath, 'w', encoding='utf-8') as f:
+    json.dump(data, f, ensure_ascii=False, indent=4)
+```
+""",
+                "hint": """
+Zaimportuj `json`. Użyj konstrukcji `with open(filepath, 'w')` do otwarcia pliku w trybie zapisu, a następnie wywołaj `json.dump(data, f)`.
+""",
+                "template": """# -*- coding: utf-8 -*-
+import json
+
+def serialize_and_save(data: dict, filepath: str) -> None:
+    \"\"\"
+    Zapisuje słownik do pliku w formacie JSON.
+    \"\"\"
+    # TWÓJ KOD TUTAJ
+    pass
+""",
+                "exercise_path": "exercises/module_2/task_3.py",
+                "test_path": ".agents/tests/test_module_2_3.py"
+            }
+        }
+    },
+    3: {
+        "title": "Moduł 3: Wprowadzenie do Pandas & NumPy",
         "tasks": {
             1: {
                 "title": "Analiza stóp zwrotu akcji (DataFrame & Series)",
                 "lesson": """
-Witaj w Module 2! Pandas i NumPy to fundamenty analizy danych w Pythonie.
-DataFrame reprezentuje tabelę danych, a Series to pojedyncza kolumna.
-W analizie rynków finansowych kluczowe są stopy zwrotu (returns):
-1. Prosta stopa zwrotu: R_t = (P_t - P_{t-1}) / P_{t-1} (w Pandas: .pct_change())
-2. Logarytmiczna stopa zwrotu: r_t = ln(P_t / P_{t-1}) (w NumPy: np.log(P_t / P_{t-1}))
-
-Twoim zadaniem jest uzupełnienie funkcji analyze_stock_returns(prices_list) w exercises/module_2/task_1.py.
+Witaj w Module 3! Pandas i NumPy to podstawowe narzędzia analityka danych.
+Twoim zadaniem jest uzupełnienie funkcji analyze_stock_returns(prices_list) w exercises/module_3/task_1.py.
 Funkcja powinna przyjąć listę cen zamknięcia akcji, utworzyć DataFrame, obliczyć stopy zwrotu oraz podstawowe statystyki (średnią i odchylenie standardowe prostych stóp zwrotu).
 """,
                 "theory": """
 === Podstawy Pandas & NumPy dla Analizy Finansowej ===
 
-1. Co to jest DataFrame?
-   Tabela dwuwymiarowa z kolumnami. Tworzenie DataFrame ze słownika:
-   df = pd.DataFrame({'nazwa_kolumny': lista_wartosci})
-
+1. Tworzenie DataFrame:
+   `df = pd.DataFrame({'price': prices})`
 2. Metoda .pct_change():
-   Wbudowana funkcja Pandas do obliczania procentowej zmiany wiersz do wiersza:
-   df['simple_return'] = df['price'].pct_change()
-   Uwaga: Pierwsza wartość stopy zwrotu zawsze będzie równa NaN (brak wcześniejszego punktu odniesienia).
-
-3. Funkcja przesunięcia .shift(1):
-   Pozwala pobrać wartość z poprzedniego okresu (wiersza):
-   poprzednie_ceny = df['price'].shift(1)
-
-4. Logarytmowanie i NumPy:
-   W analizie ilościowej często stosuje się stopy logarytmiczne: log(cena_t / cena_t-1).
-   Używamy numpy:
-   df['log_return'] = np.log(df['price'] / df['price'].shift(1))
-
-5. Metody statystyczne:
-   - Średnia stóp zwrotu: `df['simple_return'].mean()`
-   - Odchylenie standardowe (zmienność / zmienność historyczna): `df['simple_return'].std()`
-   Funkcje te automatycznie ignorują wartości NaN.
+   Oblicza procentową zmianę wartości: `df['price'].pct_change()`
+3. Logarytmowanie:
+   `np.log(df['price'] / df['price'].shift(1))`
+4. Statystyki: `.mean()` oraz `.std()`
 """,
                 "hint": """
-Wskazówki implementacyjne:
-1. Zainicjuj DataFrame z kolumną 'price':
-   `df = pd.DataFrame({'price': prices})`
-2. Oblicz prostą stopę zwrotu:
-   `df['simple_return'] = df['price'].pct_change()`
-3. Oblicz logarytmiczną stopę zwrotu za pomocą NumPy:
-   `df['log_return'] = np.log(df['price'] / df['price'].shift(1))`
-4. Wylicz statystyki:
-   `mean_return = df['simple_return'].mean()`
-   `volatility = df['simple_return'].std()`
-5. Zwróć krotkę: `return df, mean_return, volatility`
+Utwórz DataFrame ze słownika, wylicz pct_change() i log(), a na koniec stopy średnie i odchylenie standardowe.
 """,
                 "template": """# -*- coding: utf-8 -*-
 import pandas as pd
@@ -235,34 +328,25 @@ def analyze_stock_returns(prices: list) -> tuple:
     # TWÓJ KOD TUTAJ
     pass
 """,
-                "exercise_path": "exercises/module_2/task_1.py",
-                "test_path": ".agents/tests/test_module_2.py"
+                "exercise_path": "exercises/module_3/task_1.py",
+                "test_path": ".agents/tests/test_module_3_1.py"
             },
             2: {
                 "title": "Fuzja danych makro- i mikroekonomicznych (Merge/Join)",
                 "lesson": """
-Witaj w zadaniu 2.2!
-W analizie ekonomicznej często musimy połączyć dane mikroekonomiczne (np. ceny akcji spółki lub jej wyniki) z danymi makroekonomicznymi (np. stopy procentowe banku centralnego, PKB lub stopa inflacji).
-Twoim zadaniem jest połączenie dwóch DataFrame'ów po kolumnie 'data' z użyciem złączenia typu 'left'.
+Witaj w zadaniu 3.2!
+Połącz dwa DataFrame'y po kolumnie 'data' z użyciem złączenia typu 'left' (zachowaj wszystkie wiersze z micro_df).
 
-Uzupełnij kod w exercises/module_2/task_2.py.
+Uzupełnij kod w exercises/module_3/task_2.py.
 """,
                 "theory": """
 === Łączenie tabel w Pandas (pd.merge) ===
 
-Funkcja `pd.merge` pozwala na łączenie ramki danych (DataFrame) na podstawie wspólnych kolumn (kluczy):
-`df_merged = pd.merge(df_lewy, df_prawy, on='nazwa_kolumny', how='typ_złączenia')`
-
-Parametr `how` decyduje o rodzaju złączenia:
-- `'inner'`: tylko wiersze, których klucze występują w obu tabelach.
-- `'left'`: wszystkie wiersze z lewej tabeli oraz dopasowane z prawej (brakujące w prawej zostaną uzupełnione jako NaN).
-- `'right'`: analogicznie do left, ale zachowuje prawą tabelę.
-- `'outer'`: zachowuje wszystkie wiersze z obu tabel.
+Złączenie lewostronne:
+`df_merged = pd.merge(df_lewy, df_prawy, on='klucz', how='left')`
 """,
                 "hint": """
-Wskazówki implementacyjne:
-Użyj `pd.merge`:
-`return pd.merge(micro_df, macro_df, on='data', how='left')`
+Użyj funkcji `pd.merge` z parametrami `on='data'` oraz `how='left'`.
 """,
                 "template": """# -*- coding: utf-8 -*-
 import pandas as pd
@@ -274,34 +358,25 @@ def merge_macro_micro(micro_df: pd.DataFrame, macro_df: pd.DataFrame) -> pd.Data
     # TWÓJ KOD TUTAJ
     pass
 """,
-                "exercise_path": "exercises/module_2/task_2.py",
-                "test_path": ".agents/tests/test_module_2_2.py"
+                "exercise_path": "exercises/module_3/task_2.py",
+                "test_path": ".agents/tests/test_module_3_2.py"
             },
             3: {
                 "title": "Agregacja i grupowanie portfela inwestycyjnego",
                 "lesson": """
-Witaj w zadaniu 2.3!
-Agregacja to klucz do analizy dużych zbiorów danych. W finansach często chcemy pogrupować aktywa w portfelu według klasy aktywów lub sektora gospodarki i obliczyć łączne statystyki.
-Twoim zadaniem jest pogrupowanie portfela po kolumnie 'sektor' i obliczenie:
-1. Całkowitej wartości portfela w każdym sektorze (suma kolumny 'wartosc').
-2. Średniej stopy zwrotu w każdym sektorze (średnia kolumny 'stopa_zwrotu').
+Witaj w zadaniu 3.3!
+Pogrupuj dane portfela inwestycyjnego po kolumnie 'sektor' i oblicz całkowitą wartość ('wartosc') jako sumę oraz średnią stopę zwrotu ('stopa_zwrotu') w każdym sektorze.
 
-Uzupełnij kod w exercises/module_2/task_3.py.
+Uzupełnij kod w exercises/module_3/task_3.py.
 """,
                 "theory": """
-=== Grupowanie danych (groupby) i agregacja ===
+=== Grupowanie danych i agregacja ===
 
-Metoda `.groupby()` pozwala na dzielenie danych na grupy na podstawie wartości w jednej lub wielu kolumnach.
-Po pogrupowaniu stosujemy metodę `.agg()` do obliczenia statystyk:
-`df_grouped = df.groupby('kolumna_grupujaca').agg({'kolumna_1': 'metoda_1', 'kolumna_2': 'metoda_2'})`
-
-Przykład:
-`df.groupby('kraj').agg({'populacja': 'sum', 'pkb_per_capita': 'mean'})`
+Grupowanie i agregacja w Pandas:
+`df.groupby('kolumna').agg({'kolumna_A': 'sum', 'kolumna_B': 'mean'})`
 """,
                 "hint": """
-Wskazówki implementacyjne:
-Pogrupuj po 'sektor' i użyj agregacji:
-`return portfolio_df.groupby('sektor').agg({'wartosc': 'sum', 'stopa_zwrotu': 'mean'})`
+Zastosuj `.groupby('sektor').agg({'wartosc': 'sum', 'stopa_zwrotu': 'mean'})` na obiekcie DataFrame.
 """,
                 "template": """# -*- coding: utf-8 -*-
 import pandas as pd
@@ -313,61 +388,32 @@ def aggregate_portfolio(portfolio_df: pd.DataFrame) -> pd.DataFrame:
     # TWÓJ KOD TUTAJ
     pass
 """,
-                "exercise_path": "exercises/module_2/task_3.py",
-                "test_path": ".agents/tests/test_module_2_3.py"
+                "exercise_path": "exercises/module_3/task_3.py",
+                "test_path": ".agents/tests/test_module_3_3.py"
             }
         }
     },
-    3: {
-        "title": "Moduł 3: Pozyskiwanie & Czyszczenie Danych (Data Wrangling)",
+    4: {
+        "title": "Moduł 4: Zaawansowane Czyszczenie Danych (Data Wrangling)",
         "tasks": {
             1: {
                 "title": "Czyszczenie wskaźników makroekonomicznych",
                 "lesson": """
-Witaj w Module 3! Rzeczywiste dane rzadko są idealne. Często zawierają braki (NaN), niepoprawne formaty typów danych (np. liczby zapisane jako tekst) oraz błędy grubego błędu (anomalie rynkowe).
-W tym zadaniu wyczyścisz tabelę makroekonomiczną.
-Musisz:
-1. Wczytać plik CSV wskazany w argumencie.
-2. Zmienić typ kolumny 'PKB_usd' na float. Usuń znaki '$' oraz przecinki/spacje.
-3. Zidentyfikować anomalie w kolumnie 'Inflacja'. Czasami błędne wartości są kodowane jako -999.0. Zastąp je wartością NaN.
-4. Uzupełnić brakujące wartości w kolumnie 'Inflacja' średnią wartością z tej kolumny.
-5. Usunąć wiersze, które nadal posiadają braki (NaN) w kolumnie 'Kraj' lub 'PKB_usd'.
-6. Zwrócić oczyszczony DataFrame.
+Witaj w Module 4!
+Oczyść ramkę danych z braków (NaN), błędnych formatów tekstowych i anomalii.
+Musisz wczytać CSV, wyczyścić kolumnę 'PKB_usd' (usuwając '$' i ','), zamienić -999.0 w inflacji na np.nan, uzupełnić te braki średnią, a na koniec usunąć wiersze, które posiadają braki w 'Kraj' lub 'PKB_usd'.
 
-Kod uzupełnij w exercises/module_3/task_1.py.
+Kod uzupełnij w exercises/module_4/task_1.py.
 """,
                 "theory": """
-=== Podstawy Data Wrangling w Pandas ===
+=== Czyszczenie i konwersja danych w Pandas ===
 
-1. Wczytywanie danych:
-   `df = pd.read_csv(file_path)`
-
-2. Praca na łańcuchach tekstowych w kolumnach:
-   Można używać metod tekstowych za pomocą akcesora `.str`:
-   `df['PKB_usd'] = df['PKB_usd'].astype(str).str.replace('$', '').str.replace(',', '').str.strip()`
-   Po usunięciu niechcianych znaków konwertujemy na liczby:
-   `df['PKB_usd'] = pd.to_numeric(df['PKB_usd'], errors='coerce')`
-   `errors='coerce'` sprawi, że błędne wartości (np. puste) staną się wartościami NaN.
-
-3. Zamiana wartości (zastępowanie anomalii):
-   `df['Inflacja'] = df['Inflacja'].replace(-999.0, np.nan)`
-
-4. Uzupełnianie braków:
-   Obliczamy średnią z kolumny, a następnie używamy `.fillna()`:
-   `srednia = df['Inflacja'].mean()`
-   `df['Inflacja'] = df['Inflacja'].fillna(srednia)`
-
-5. Usuwanie wierszy z brakami w kluczowych kolumnach:
-   `df = df.dropna(subset=['Kraj', 'PKB_usd'])`
+Zastępowanie symboli w napisach: `df['col'].astype(str).str.replace('$', '')`
+Rzutowanie na typ numeryczny: `pd.to_numeric(df['col'], errors='coerce')`
+Usuwanie pustych wierszy: `df.dropna(subset=['col1', 'col2'])`
 """,
                 "hint": """
-Wskazówki implementacyjne:
-1. Wczytaj dane: `df = pd.read_csv(file_path)`
-2. Oczyść kolumnę 'PKB_usd' za pomocą metod `.str.replace` dla znaku dolara i przecinka, a następnie wywołaj `pd.to_numeric(..., errors='coerce')`.
-3. Zastąp anomalne inflacje -999.0 wartością `np.nan` (użyj `df['Inflacja'].replace(-999.0, np.nan)`).
-4. Oblicz średnią i uzupełnij: `mean_inf = df['Inflacja'].mean()` oraz `df['Inflacja'] = df['Inflacja'].fillna(mean_inf)`.
-5. Przefiltruj braki za pomocą: `df = df.dropna(subset=['Kraj', 'PKB_usd'])`.
-6. Zwróć `df`.
+Wyczyść tekst, zmień typ, podmień -999.0, fillna średnią, na koniec dropna.
 """,
                 "template": """# -*- coding: utf-8 -*-
 import pandas as pd
@@ -380,33 +426,25 @@ def clean_macro_data(file_path: str) -> pd.DataFrame:
     # TWÓJ KOD TUTAJ
     pass
 """,
-                "exercise_path": "exercises/module_3/task_1.py",
-                "test_path": ".agents/tests/test_module_3.py"
+                "exercise_path": "exercises/module_4/task_1.py",
+                "test_path": ".agents/tests/test_module_4_1.py"
             },
             2: {
                 "title": "Zaawansowana imputacja braków danych (NaN)",
                 "lesson": """
-Witaj w zadaniu 3.2!
-Wcześniej uzupełnialiśmy braki średnią z całej kolumny. Jednak w ekonomii kraje o podobnym profilu (np. z tego samego kontynentu) mają bliższe wskaźniki. Uzupełnianie braków średnią globalną zniekształca strukturę.
-Zaimplementuj bardziej zaawansowaną imputację: uzupełnij brakujące wartości w kolumnie 'PKB' średnią wartością z tej samej kolumny obliczoną w ramach danej grupy 'kontynent'.
+Witaj w zadaniu 4.2!
+Uzupełnij brakujące wartości w kolumnie 'PKB' średnią wartością PKB obliczoną w ramach danej grupy 'kontynent'.
 
-Kod uzupełnij w exercises/module_3/task_2.py.
+Kod uzupełnij w exercises/module_4/task_2.py.
 """,
                 "theory": """
-=== Grupowanie i transformacja (transform) ===
+=== Grupowa imputacja braków ===
 
-Metoda `.transform()` pozwala wykonać operację w ramach grup wyznaczonych przez `groupby`, zwracając obiekt o takim samym rozmiarze jak oryginalny DataFrame. Jest to idealne do imputacji grupowej.
-
-Wzór:
+Używamy metody transform:
 `df['PKB'] = df.groupby('kontynent')['PKB'].transform(lambda x: x.fillna(x.mean()))`
-
-Lambda wyrażenie pobiera grupę `x` (kolumnę dla danego kontynentu) i wywołuje na niej `.fillna(x.mean())`, co uzupełnia braki średnią tylko z tej grupy.
 """,
                 "hint": """
-Wskazówki implementacyjne:
-Zastosuj transformację grupową:
-`df['PKB'] = df.groupby('kontynent')['PKB'].transform(lambda x: x.fillna(x.mean()))`
-`return df`
+Pogrupuj po kontynencie, pobierz PKB, wywołaj transform z wyrażeniem lambda i przypisz z powrotem.
 """,
                 "template": """# -*- coding: utf-8 -*-
 import pandas as pd
@@ -418,89 +456,393 @@ def impute_missing_gdp(df: pd.DataFrame) -> pd.DataFrame:
     # TWÓJ KOD TUTAJ
     pass
 """,
-                "exercise_path": "exercises/module_3/task_2.py",
-                "test_path": ".agents/tests/test_module_3_2.py"
+                "exercise_path": "exercises/module_4/task_2.py",
+                "test_path": ".agents/tests/test_module_4_2.py"
             },
             3: {
                 "title": "Detekcja anomalii (outliers) za pomocą Z-Score",
                 "lesson": """
-Witaj w zadaniu 3.3!
-Błędy wprowadzania danych rynkowych potrafią mocno zniekształcić analizę statystyczną. Do wykrywania wartości skrajnych (outliers) często używa się wskaźnika Z-Score.
-Z-Score mówi o tym, o ile odchyleń standardowych dana wartość odbiega od średniej:
-Z = (x - mean) / std
+Witaj w zadaniu 4.3!
+Znajdź statystyczne outliers w wybranej kolumnie przy użyciu miary Z-Score. Zwróć podzbiór wierszy, dla których |Z-Score| > threshold.
 
-Twoim zadaniem jest przefiltrowanie tabeli i zwrócenie DataFrame zwierającego wyłącznie anomalie (outliers) dla wskazanej kolumny, czyli wiersze, dla których wartość bezwzględna Z-Score jest większa niż podany próg (threshold).
-
-Kod uzupełnij w exercises/module_3/task_3.py.
+Kod uzupełnij w exercises/module_4/task_3.py.
 """,
                 "theory": """
-=== Obliczanie Z-Score i filtrowanie anomalii ===
+=== Obliczanie Z-Score ===
 
-Wzór na obliczenie Z-Score dla kolumny w Pandas:
-`mean = df[column].mean()`
-`std = df[column].std()`
-`z_score = (df[column] - mean) / std`
-
-Następnie filtrujemy wiersze spełniające warunek:
-`abs(z_score) > threshold`
+`z = (df[column] - df[column].mean()) / df[column].std()`
+Filtrowanie: `df[z.abs() > threshold]`
 """,
                 "hint": """
-Wskazówki implementacyjne:
-1. Wylicz średnią: `m = df[column].mean()`
-2. Wylicz odchylenie standardowe: `s = df[column].std()`
-3. Oblicz z_score: `z = (df[column] - m) / s`
-4. Zwróć wiersze, gdzie `abs(z) > threshold`: `return df[abs(z) > threshold]`
+Oblicz średnią i odchylenie standardowe kolumny. Wylicz z-score dla każdego wiersza i przefiltruj ramkę za pomocą metody indeksowania warunkowego.
 """,
                 "template": """# -*- coding: utf-8 -*-
 import pandas as pd
 
 def detect_outliers_zscore(df: pd.DataFrame, column: str, threshold: float = 3.0) -> pd.DataFrame:
     \"\"\"
-    Zwraca podzbiór wierszy df stanowiących wartości odstające (outliers) w kolumnie column.
+    Zwraca wiersze df stanowiące wartości odstające (outliers) w kolumnie column.
     \"\"\"
     # TWÓJ KOD TUTAJ
     pass
 """,
-                "exercise_path": "exercises/module_3/task_3.py",
-                "test_path": ".agents/tests/test_module_3_3.py"
+                "exercise_path": "exercises/module_4/task_3.py",
+                "test_path": ".agents/tests/test_module_4_3.py"
             }
         }
     },
-    4: {
-        "title": "Moduł 4: Swarm & AI Automation",
+    5: {
+        "title": "Moduł 5: Szeregi Czasowe (Time Series) w Finansach",
+        "tasks": {
+            1: {
+                "title": "Filtrowanie i indeksowanie szeregów czasowych",
+                "lesson": """
+Witaj w Module 5!
+Praca z datami to kluczowa umiejętność każdego analityka rynkowego.
+Zaimplementuj funkcję `filter_by_date(df, start_date, end_date)`. Funkcja powinna konwertować indeks lub kolumnę 'data' na typ datetime, ustawiać go jako indeks (jeśli nie jest) i zwracać przefiltrowany zakres dat od `start_date` do `end_date` (włącznie).
+
+Kod uzupełnij w exercises/module_5/task_1.py.
+""",
+                "theory": """
+=== Praca z datami w Pandas ===
+
+Konwersja na typ datetime: `df['data'] = pd.to_datetime(df['data'])`
+Ustawienie indeksu: `df = df.set_index('data')`
+Filtrowanie zakresu: `df.loc[start_date:end_date]`
+""",
+                "hint": """
+Użyj `pd.to_datetime()`, potem `set_index('data')` i wreszcie przefiltruj przy użyciu `.loc[start_date:end_date]`.
+""",
+                "template": """# -*- coding: utf-8 -*-
+import pandas as pd
+
+def filter_by_date(df: pd.DataFrame, start_date: str, end_date: str) -> pd.DataFrame:
+    \"\"\"
+    Konwertuje kolumnę 'data' na datetime, ustawia jako indeks i filtruje przedział.
+    \"\"\"
+    # TWÓJ KOD TUTAJ
+    pass
+""",
+                "exercise_path": "exercises/module_5/task_1.py",
+                "test_path": ".agents/tests/test_module_5_1.py"
+            },
+            2: {
+                "title": "Średnie kroczące w szeregach czasowych",
+                "lesson": """
+Witaj w zadaniu 5.2!
+Średnie kroczące (rolling windows) służą do wygładzania wahań i analizy trendu cen.
+Napisz funkcję `calculate_rolling_mean(df, window)`, która zwróci serię (Series) zawierającą średnią kroczącą z kolumny 'price' o oknie wielkości `window`.
+
+Kod uzupełnij w exercises/module_5/task_2.py.
+""",
+                "theory": """
+=== Metoda .rolling() w Pandas ===
+
+Metoda `.rolling(window=N)` pozwala na agregację w oknach przesuwnych.
+Przykład:
+`df['price'].rolling(window=5).mean()`
+Pierwsze `N-1` wartości będą miały wartość NaN.
+""",
+                "hint": """
+Pobierz kolumnę 'price', wywołaj `.rolling(window=window).mean()` i zwróć wynik.
+""",
+                "template": """# -*- coding: utf-8 -*-
+import pandas as pd
+
+def calculate_rolling_mean(df: pd.DataFrame, window: int) -> pd.Series:
+    \"\"\"
+    Oblicza średnią kroczącą z kolumny 'price' o rozmiarze okna window.
+    \"\"\"
+    # TWÓJ KOD TUTAJ
+    pass
+""",
+                "exercise_path": "exercises/module_5/task_2.py",
+                "test_path": ".agents/tests/test_module_5_2.py"
+            },
+            3: {
+                "title": "Resampling danych finansowych (Zmiana częstotliwości)",
+                "lesson": """
+Witaj w zadaniu 5.3!
+Agregacja szeregów czasowych (resampling) pozwala zmienić np. dane dzienne na dane miesięczne lub roczne.
+Napisz funkcję `resample_to_monthly(df)`, która przyjmuje DataFrame z DateTimeIndex, oblicza średnie miesięczne z kolumn liczbowych i zwraca DataFrame o częstotliwości miesięcznej (indeksowany na koniec miesiąca).
+
+Kod uzupełnij w exercises/module_5/task_3.py.
+""",
+                "theory": """
+=== Resampling w Pandas ===
+
+Metoda `.resample()` działa podobnie do grupowania, ale po osi czasu:
+`df_monthly = df.resample('ME').mean()`
+Oznaczenie `'M'` (lub `'ME'`) oznacza agregację miesięczną.
+""",
+                "hint": """
+Użyj metody `.resample('ME').mean()` na wejściowej ramce danych.
+""",
+                "template": """# -*- coding: utf-8 -*-
+import pandas as pd
+
+def resample_to_monthly(df: pd.DataFrame) -> pd.DataFrame:
+    \"\"\"
+    Agreguje dzienne dane w DataFrame do średnich miesięcznych.
+    \"\"\"
+    # TWÓJ KOD TUTAJ
+    pass
+""",
+                "exercise_path": "exercises/module_5/task_3.py",
+                "test_path": ".agents/tests/test_module_5_3.py"
+            }
+        }
+    },
+    6: {
+        "title": "Moduł 6: Praca z Relacyjnymi Bazami Danych (SQL & SQLite)",
+        "tasks": {
+            1: {
+                "title": "Odczyt danych z SQLite bezpośrednio do Pandas",
+                "lesson": """
+Witaj w Module 6!
+Większość danych firmowych znajduje się w relacyjnych bazach danych (SQL).
+Napisz funkcję `read_sql_data(db_path, query)`, która łączy się z bazą danych SQLite w lokalizacji `db_path`, wykonuje zapytanie `query` i zwraca wynik jako Pandas DataFrame. Pamiętaj o zamknięciu połączenia z bazą!
+
+Kod uzupełnij w exercises/module_6/task_1.py.
+""",
+                "theory": """
+=== Odczyt baz danych w Pandas ===
+
+Biblioteka `sqlite3` obsługuje bazy SQLite w Pythonie.
+Pandas pozwala odczytać zapytanie bezpośrednio do DataFrame:
+```python
+import sqlite3
+import pandas as pd
+
+conn = sqlite3.connect(db_path)
+df = pd.read_sql_query(query, conn)
+conn.close()
+```
+""",
+                "hint": """
+Zaimportuj `sqlite3` oraz `pandas`. Utwórz połączenie za pomocą `sqlite3.connect()`, odczytaj dane za pomocą `pd.read_sql_query()`, zamknij połączenie i zwróć ramkę.
+""",
+                "template": """# -*- coding: utf-8 -*-
+import pandas as pd
+import sqlite3
+
+def read_sql_data(db_path: str, query: str) -> pd.DataFrame:
+    \"\"\"
+    Łączy się z SQLite w db_path, pobiera dane zapytaniem query i zwraca DataFrame.
+    \"\"\"
+    # TWÓJ KOD TUTAJ
+    pass
+""",
+                "exercise_path": "exercises/module_6/task_1.py",
+                "test_path": ".agents/tests/test_module_6_1.py"
+            },
+            2: {
+                "title": "Eksportowanie danych z Pandas do bazy SQL",
+                "lesson": """
+Witaj w zadaniu 6.2!
+Zapisywanie przetworzonych danych do bazy SQL to standardowy krok w procesach ETL.
+Napisz funkcję `write_to_sql(df, db_path, table_name)`. Funkcja powinna zapisać DataFrame do tabeli o nazwie `table_name` w bazie danych SQLite pod ścieżką `db_path`. Jeśli tabela istnieje, ma zostać nadpisana. Nie zapisuj indeksu DataFrame.
+
+Kod uzupełnij w exercises/module_6/task_2.py.
+""",
+                "theory": """
+=== Zapis do SQL w Pandas ===
+
+Do eksportu służy metoda `.to_sql()`:
+`df.to_sql(table_name, conn, if_exists='replace', index=False)`
+Parametr `if_exists='replace'` nadpisuje tabelę w bazie danych.
+""",
+                "hint": """
+Połącz się z bazą przez `sqlite3.connect()`, wywołaj `df.to_sql(table_name, conn, if_exists='replace', index=False)`, a na koniec zamknij połączenie.
+""",
+                "template": """# -*- coding: utf-8 -*-
+import pandas as pd
+import sqlite3
+
+def write_to_sql(df: pd.DataFrame, db_path: str, table_name: str) -> None:
+    \"\"\"
+    Zapisuje DataFrame do tabeli table_name w bazie danych SQLite.
+    \"\"\"
+    # TWÓJ KOD TUTAJ
+    pass
+""",
+                "exercise_path": "exercises/module_6/task_2.py",
+                "test_path": ".agents/tests/test_module_6_2.py"
+            },
+            3: {
+                "title": "Raport sprzedaży bezpośrednio z bazy danych SQL",
+                "lesson": """
+Witaj w zadaniu 6.3!
+Czasami wydajniej jest agregować dane po stronie silnika SQL zamiast pobierać całą bazę do pamięci Pythona.
+Napisz funkcję `get_total_sales_by_product(db_path)`, która łączy się z bazą danych i wykonuje zapytanie SQL sumujące przychody:
+`SELECT product, SUM(quantity * price) AS total_sales FROM sales GROUP BY product`
+Funkcja ma zwrócić wynik jako listę krotek (wyniki zapytania `cursor.fetchall()`).
+
+Kod uzupełnij w exercises/module_6/task_3.py.
+""",
+                "theory": """
+=== Agregacje i Kursory SQL w Pythonie ===
+
+Bez używania Pandas możemy operować bezpośrednio kursorami `sqlite3`:
+```python
+conn = sqlite3.connect(db_path)
+cursor = conn.cursor()
+cursor.execute(query)
+results = cursor.fetchall()  # Zwraca listę krotek
+conn.close()
+```
+""",
+                "hint": """
+Utwórz kursor z połączenia, wykonaj zapytanie SELECT z sumowaniem i grupuj po produkcie, pobierz wyniki za pomocą fetchall(), zamknij bazę i zwróć listę.
+""",
+                "template": """# -*- coding: utf-8 -*-
+import sqlite3
+
+def get_total_sales_by_product(db_path: str) -> list:
+    \"\"\"
+    Wykonuje zapytanie SQL grupujące i sumujące sprzedaż i zwraca listę krotek.
+    \"\"\"
+    # TWÓJ KOD TUTAJ
+    pass
+""",
+                "exercise_path": "exercises/module_6/task_3.py",
+                "test_path": ".agents/tests/test_module_6_3.py"
+            }
+        }
+    },
+    7: {
+        "title": "Moduł 7: Analiza Statystyczna & Ekonometria (Statsmodels/Scipy)",
+        "tasks": {
+            1: {
+                "title": "Obliczanie macierzy korelacji zmiennych",
+                "lesson": """
+Witaj w Module 7!
+Analiza korelacji pozwala sprawdzić, jak silnie powiązane są ze sobą wskaźniki (np. bezrobocie i inflacja).
+Napisz funkcję `get_correlations(df)`, która obliczy i zwróci macierz korelacji Pearsona dla wszystkich kolumn liczbowych w DataFrame.
+
+Kod uzupełnij w exercises/module_7/task_1.py.
+""",
+                "theory": """
+=== Korelacja w Pandas ===
+
+Metoda `.corr()` w Pandas automatycznie wylicza współczynniki korelacji liniowej:
+`correlation_matrix = df.corr(method='pearson')`
+Wartości mieszczą się w przedziale [-1, 1].
+""",
+                "hint": """
+Po prostu wywołaj `df.corr(method='pearson')` i zwróć tę macierz.
+""",
+                "template": """# -*- coding: utf-8 -*-
+import pandas as pd
+
+def get_correlations(df: pd.DataFrame) -> pd.DataFrame:
+    \"\"\"
+    Zwraca macierz korelacji Pearsona dla kolumn numerycznych.
+    \"\"\"
+    # TWÓJ KOD TUTAJ
+    pass
+""",
+                "exercise_path": "exercises/module_7/task_1.py",
+                "test_path": ".agents/tests/test_module_7_1.py"
+            },
+            2: {
+                "title": "Regresja liniowa OLS (Dopasowanie modelu)",
+                "lesson": """
+Witaj w zadaniu 7.2!
+Regresja liniowa (Metoda Najmniejszych Kwadratów - OLS) to podstawowe narzędzie ekonometryczne do badania przyczynowo-skutkowego.
+Napisz funkcję `run_regression(df, y_col, x_col)`, która dopasuje model OLS, gdzie `y_col` to zmienna objaśniana (np. 'popyt'), a `x_col` to zmienna objaśniająca (np. 'cena'). Dodaj stałą (wyraz wolny) do zmiennej objaśniającej. Funkcja powinna zwracać krotkę `(rsquared, pvalues)` z dopasowanego modelu.
+
+Kod uzupełnij w exercises/module_7/task_2.py.
+""",
+                "theory": """
+=== Modelowanie OLS w statsmodels ===
+
+Biblioteka `statsmodels` udostępnia zaawansowaną statystykę:
+```python
+import statsmodels.api as sm
+
+# Musimy dodać stałą (wyraz wolny) do X
+X = sm.add_constant(df[x_col])
+y = df[y_col]
+model = sm.OLS(y, X).fit()
+
+r2 = model.rsquared
+p_vals = model.pvalues  # Seria p-value dla stałej i zmiennej X
+```
+""",
+                "hint": """
+Użyj `sm.add_constant()` na zmiennej niezależnej, zbuduj model `sm.OLS(y, X)`, wywołaj `.fit()` i zwróć `(model.rsquared, model.pvalues)`.
+""",
+                "template": """# -*- coding: utf-8 -*-
+import pandas as pd
+import statsmodels.api as sm
+
+def run_regression(df: pd.DataFrame, y_col: str, x_col: str) -> tuple:
+    \"\"\"
+    Dopasowuje model regresji liniowej OLS i zwraca (R-squared, p-values).
+    \"\"\"
+    # TWÓJ KOD TUTAJ
+    pass
+""",
+                "exercise_path": "exercises/module_7/task_2.py",
+                "test_path": ".agents/tests/test_module_7_2.py"
+            },
+            3: {
+                "title": "Test t-Studenta dla dwóch prób niezależnych",
+                "lesson": """
+Witaj w zadaniu 7.3!
+Test t-Studenta służy do weryfikacji hipotezy, czy średnie w dwóch grupach są statystycznie równe (np. czy nowa strategia marketingowa zwiększyła sprzedaż).
+Napisz funkcję `run_t_test(sample1, sample2)`, która przeprowadzi dwustronny test t-Studenta dla dwóch prób niezależnych i zwróci statystykę t oraz wartość p (p-value) jako krotkę `(t_stat, p_value)`.
+
+Kod uzupełnij w exercises/module_7/task_3.py.
+""",
+                "theory": """
+=== Testy statystyczne w scipy ===
+
+Moduł `scipy.stats` zawiera implementacje testów:
+```python
+from scipy import stats
+
+t_stat, p_value = stats.ttest_ind(sample1, sample2)
+```
+""",
+                "hint": """
+Użyj funkcji `stats.ttest_ind(sample1, sample2)` i zwróć jej wynik.
+""",
+                "template": """# -*- coding: utf-8 -*-
+from scipy import stats
+
+def run_t_test(sample1: list, sample2: list) -> tuple:
+    \"\"\"
+    Przeprowadza test t-Studenta dla dwóch prób niezależnych i zwraca (t_stat, p_value).
+    \"\"\"
+    # TWÓJ KOD TUTAJ
+    pass
+""",
+                "exercise_path": "exercises/module_7/task_3.py",
+                "test_path": ".agents/tests/test_module_7_3.py"
+            }
+        }
+    },
+    8: {
+        "title": "Moduł 8: Automatyzacja & Integracja AI (Swarm)",
         "tasks": {
             1: {
                 "title": "Cykliczne sprawdzanie i logowanie danych (Scheduler)",
                 "lesson": """
-Witaj w Module 4! Automatyzacja to serce systemów agentowych. Agent musi potrafić samodzielnie i cyklicznie wykonywać operacje (np. pobieranie kursów walut).
-W tym zadaniu zaimplementujesz prosty harmonogram zadań w Pythonie.
+Witaj w Module 8!
+Zaimplementuj prosty harmonogram zadań w Pythonie.
 Funkcja `schedule_data_check(check_func, interval_sec, max_iterations)` powinna cyklicznie wywoływać przekazaną funkcję `check_func` co określony czas (`interval_sec`), maksymalnie `max_iterations` razy, i zwracać listę z wynikami tych uruchomień.
 
-Kod uzupełnij w exercises/module_4/task_1.py.
+Kod uzupełnij w exercises/module_8/task_1.py.
 """,
                 "theory": """
-=== Tworzenie pętli czasowych w Pythonie ===
+=== Harmonogram z time.sleep ===
 
-Do wstrzymania wykonywania programu na określony czas służy funkcja `time.sleep(seconds)` z modułu `time`.
-
-Struktura pętli wykonującej się określoną liczbę razy z opóźnieniem:
-```python
-results = []
-for i in range(max_iterations):
-    val = check_func()
-    results.append(val)
-    if i < max_iterations - 1:  # Nie śpij po ostatnim wykonaniu
-        time.sleep(interval_sec)
-return results
-```
+`time.sleep(seconds)` zawiesza działanie wątku na podany czas.
 """,
                 "hint": """
-Wskazówki implementacyjne:
-Zaimportuj `time`.
-Stwórz pustą listę. Użyj pętli `for _ in range(max_iterations):`.
-Wywołaj `check_func()`, dodaj wynik do listy.
-Jeśli to nie jest ostatnia iteracja, wywołaj `time.sleep(interval_sec)`.
-Zwróć listę wyników.
+W pętli for wywołaj check_func(), dodaj wynik do listy, a jeśli to nie jest ostatnia iteracja – wywołaj `time.sleep(interval_sec)`.
 """,
                 "template": """# -*- coding: utf-8 -*-
 import time
@@ -513,36 +855,27 @@ def schedule_data_check(check_func, interval_sec: int, max_iterations: int) -> l
     # TWÓJ KOD TUTAJ
     pass
 """,
-                "exercise_path": "exercises/module_4/task_1.py",
-                "test_path": ".agents/tests/test_module_4_1.py"
+                "exercise_path": "exercises/module_8/task_1.py",
+                "test_path": ".agents/tests/test_module_8_1.py"
             },
             2: {
                 "title": "Delegowanie zadań do wyspecjalizowanych subagentów",
                 "lesson": """
-Witaj w zadaniu 4.2!
-W architekturze wieloagentowej (Multi-Agent Swarm) zadania użytkownika są analizowane, a następnie kierowane (rutowane) do wyspecjalizowanych jednostek pomocniczych (subagentów).
-Zaimplementuj prosty router żądań. Funkcja `delegate_to_subagent(user_request)` powinna analizować tekst:
-- Jeśli żądanie zawiera słowa 'statystyka' lub 'analiza': kieruje do agenta statystyk, zwracając tekst "Delegowano do: Agent Statystyczny".
-- Jeśli żądanie zawiera słowa 'wykres' lub 'wizualizacja': kieruje do agenta graficznego, zwracając tekst "Delegowano do: Agent Wizualizacji".
-- W pozostałych przypadkach: zwraca tekst "Delegowano do: General Agent".
+Witaj w zadaniu 8.2!
+Zaimplementuj prosty router żądań w architekturze wieloagentowej. Funkcja `delegate_to_subagent(user_request)` analizuje tekst:
+- Jeśli żądanie zawiera słowa 'statystyka' lub 'analiza': zwraca "Delegowano do: Agent Statystyczny".
+- Jeśli żądanie zawiera słowa 'wykres' lub 'wizualizacja': zwraca "Delegowano do: Agent Wizualizacji".
+- W pozostałych przypadkach: zwraca "Delegowano do: General Agent".
 
-Kod uzupełnij w exercises/module_4/task_2.py.
+Kod uzupełnij w exercises/module_8/task_2.py.
 """,
                 "theory": """
-=== Dopasowywanie wzorców tekstowych i instrukcje warunkowe ===
+=== Rutowanie intencji ===
 
-W analizie intencji użytkownika najprostszym podejściem jest sprawdzenie obecności słów kluczowych przy użyciu operatora `in` oraz zamiany tekstu na małe litery za pomocą `.lower()`, aby wyszukiwanie było niewrażliwe na wielkość liter.
-
-Przykład:
-`if "analiza" in user_request.lower():`
+Używamy `.lower()` oraz dopasowania cząstkowego w tekście (operator `in`).
 """,
                 "hint": """
-Wskazówki implementacyjne:
-1. Sprowadź tekst do małych liter: `req = user_request.lower()`
-2. Sprawdź warunki:
-   `if "statystyka" in req or "analiza" in req: return "Delegowano do: Agent Statystyczny"`
-   `elif "wykres" in req or "wizualizacja" in req: return "Delegowano do: Agent Wizualizacji"`
-   `else: return "Delegowano do: General Agent"`
+Sprawdź obecność "statyst" lub "analiz", a także "wykres" lub "wizualiz".
 """,
                 "template": """# -*- coding: utf-8 -*-
 
@@ -553,8 +886,48 @@ def delegate_to_subagent(user_request: str) -> str:
     # TWÓJ KOD TUTAJ
     pass
 """,
-                "exercise_path": "exercises/module_4/task_2.py",
-                "test_path": ".agents/tests/test_module_4_2.py"
+                "exercise_path": "exercises/module_8/task_2.py",
+                "test_path": ".agents/tests/test_module_8_2.py"
+            },
+            3: {
+                "title": "Automatyczny Report Builder",
+                "lesson": """
+Witaj w zadaniu 8.3!
+Ostatnim krokiem analizy jest sformułowanie i zapisanie raportu końcowego do pliku.
+Napisz funkcję `build_economic_report(data_summary, filepath)`. Funkcja powinna utworzyć tekstowy raport na podstawie słownika `data_summary` i zapisać go w pliku `filepath`.
+Słownik `data_summary` zawiera klucze: 'tytul', 'autor', 'wynik'.
+Plik powinien mieć format dokładnie taki:
+Raport: <tytul>
+Autor: <autor>
+Wynik: <wynik>
+
+Kod uzupełnij w exercises/module_8/task_3.py.
+""",
+                "theory": """
+=== Zapis tekstowy i szablony ===
+
+Zapis pliku w Pythonie:
+```python
+with open(filepath, 'w', encoding='utf-8') as f:
+    f.write(report_string)
+```
+""",
+                "hint": """
+Sformatuj ciąg znaków pobierając wartości ze słownika:
+`report = f"Raport: {data_summary['tytul']}\\nAutor: {data_summary['autor']}\\nWynik: {data_summary['wynik']}"`
+Zapisz go do pliku `filepath`.
+""",
+                "template": """# -*- coding: utf-8 -*-
+
+def build_economic_report(data_summary: dict, filepath: str) -> None:
+    \"\"\"
+    Tworzy sformatowany raport tekstowy na podstawie data_summary i zapisuje go w pliku.
+    \"\"\"
+    # TWÓJ KOD TUTAJ
+    pass
+""",
+                "exercise_path": "exercises/module_8/task_3.py",
+                "test_path": ".agents/tests/test_module_8_3.py"
             }
         }
     }

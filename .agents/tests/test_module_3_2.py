@@ -3,29 +3,25 @@ import sys
 import os
 import pytest
 import pandas as pd
-import numpy as np
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
+from exercises.module_3.task_2 import merge_macro_micro
 
-from exercises.module_3.task_2 import impute_missing_gdp
-
-def test_impute_missing_gdp():
-    df = pd.DataFrame({
-        'Kraj': ['Polska', 'Niemcy', 'Czechy', 'Chiny', 'Japonia', 'Indie'],
-        'kontynent': ['Europa', 'Europa', 'Europa', 'Azja', 'Azja', 'Azja'],
-        'PKB': [100.0, 200.0, np.nan, 300.0, np.nan, 500.0]
+def test_merge_macro_micro():
+    micro_df = pd.DataFrame({
+        'data': ['2026-06-01', '2026-06-02', '2026-06-03'],
+        'cena_akcji': [100.0, 102.5, 101.0]
+    })
+    macro_df = pd.DataFrame({
+        'data': ['2026-06-01', '2026-06-02', '2026-06-04'],
+        'stopa_procentowa': [0.05, 0.0525, 0.055]
     })
     
-    result = impute_missing_gdp(df)
+    result = merge_macro_micro(micro_df, macro_df)
     
     assert isinstance(result, pd.DataFrame)
-    # Brakujące Czechy powinny mieć średnią Europy: (100 + 200)/2 = 150
-    czechy_gdp = result.loc[result['Kraj'] == 'Czechy', 'PKB'].values[0]
-    assert czechy_gdp == 150.0
-    
-    # Brakująca Japonia powinna mieć średnią Azji: (300 + 500)/2 = 400
-    japonia_gdp = result.loc[result['Kraj'] == 'Japonia', 'PKB'].values[0]
-    assert japonia_gdp == 400.0
-    
-    # Brak NaN w kolumnie PKB
-    assert result['PKB'].isna().sum() == 0
+    assert len(result) == 3
+    assert 'cena_akcji' in result.columns
+    assert 'stopa_procentowa' in result.columns
+    assert result.loc[result['data'] == '2026-06-01', 'stopa_procentowa'].values[0] == 0.05
+    assert pd.isna(result.loc[result['data'] == '2026-06-03', 'stopa_procentowa'].values[0])

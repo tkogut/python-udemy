@@ -1,12 +1,9 @@
 # -*- coding: utf-8 -*-
-import pandas as pd
+import json
 
-def aggregate_portfolio(portfolio_df: pd.DataFrame) -> pd.DataFrame:
+def serialize_and_save(data: dict, filepath: str) -> None:
     """
-    Grupuje aktywa według kolumny 'sektor' i oblicza:
-    - sumę wartości ('wartosc')
-    - średnią stopę zwrotu ('stopa_zwrotu')
-    Zwraca DataFrame z sektorami jako indeksem.
+    Zapisuje słownik do pliku w formacie JSON.
     """
     # TWÓJ KOD TUTAJ
     pass

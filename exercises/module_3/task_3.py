@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 import pandas as pd
 
-def detect_outliers_zscore(df: pd.DataFrame, column: str, threshold: float = 3.0) -> pd.DataFrame:
+def aggregate_portfolio(portfolio_df: pd.DataFrame) -> pd.DataFrame:
     """
-    Filtruje wiersze, w których wartość w podanej kolumnie odbiega od średniej
-    o więcej niż 'threshold' odchyleń standardowych.
-    Zwraca DataFrame zawierający wyłącznie te anomalne wiersze (outliers).
+    Grupuje portfolio_df po 'sektor' i oblicza sumę 'wartosc' oraz średnią 'stopa_zwrotu'.
     """
     # TWÓJ KOD TUTAJ
     pass

@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
+import pandas as pd
 
-def delegate_to_subagent(user_request: str) -> str:
+def impute_missing_gdp(df: pd.DataFrame) -> pd.DataFrame:
     """
-    Analizuje treść żądania 'user_request'. Jeśli zawiera:
-    - 'statystyka' lub 'analiza': zwraca 'Delegowano do: Agent Statystyczny'
-    - 'wykres' lub 'wizualizacja': zwraca 'Delegowano do: Agent Wizualizacji'
-    - w innych przypadkach: zwraca 'Delegowano do: General Agent'
+    Uzupełnia braki w kolumnie 'PKB' średnią wartością dla danego kontynentu.
     """
     # TWÓJ KOD TUTAJ
     pass

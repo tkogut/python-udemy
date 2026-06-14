@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-import time
+import pandas as pd
+import numpy as np
 
-def schedule_data_check(check_func, interval_sec: int, max_iterations: int) -> list:
+def clean_macro_data(file_path: str) -> pd.DataFrame:
     """
-    Urunhamia cyklicznie przekazaną funkcję 'check_func' co 'interval_sec' sekund,
-    maksymalnie 'max_iterations' razy. Zwraca listę wyników każdego uruchomienia.
+    Wczytuje i oczyszcza dane makroekonomiczne z pliku CSV.
     """
     # TWÓJ KOD TUTAJ
     pass

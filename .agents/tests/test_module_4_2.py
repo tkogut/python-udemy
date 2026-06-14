@@ -2,14 +2,24 @@
 import sys
 import os
 import pytest
+import pandas as pd
+import numpy as np
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
+from exercises.module_4.task_2 import impute_missing_gdp
 
-from exercises.module_4.task_2 import delegate_to_subagent
-
-def test_delegate_to_subagent():
-    assert delegate_to_subagent("Potrzebuję analizy PKB") == "Delegowano do: Agent Statystyczny"
-    assert delegate_to_subagent("Zrób wykres stóp zwrotu") == "Delegowano do: Agent Wizualizacji"
-    assert delegate_to_subagent("Jaka jest dzisiejsza inflacja?") == "Delegowano do: General Agent"
-    # Case insensitivity test
-    assert delegate_to_subagent("WIZUALIZACJA DANYCH") == "Delegowano do: Agent Wizualizacji"
+def test_impute_missing_gdp():
+    df = pd.DataFrame({
+        'Kraj': ['Polska', 'Niemcy', 'Czechy', 'Chiny', 'Japonia', 'Indie'],
+        'kontynent': ['Europa', 'Europa', 'Europa', 'Azja', 'Azja', 'Azja'],
+        'PKB': [100.0, 200.0, np.nan, 300.0, np.nan, 500.0]
+    })
+    
+    result = impute_missing_gdp(df)
+    assert isinstance(result, pd.DataFrame)
+    czechy_gdp = result.loc[result['Kraj'] == 'Czechy', 'PKB'].values[0]
+    assert czechy_gdp == 150.0
+    
+    japonia_gdp = result.loc[result['Kraj'] == 'Japonia', 'PKB'].values[0]
+    assert japonia_gdp == 400.0
+    assert result['PKB'].isna().sum() == 0
