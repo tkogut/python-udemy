@@ -821,6 +821,47 @@ def run_t_test(sample1: list, sample2: list) -> tuple:
 """,
                 "exercise_path": "exercises/module_7/task_3.py",
                 "test_path": ".agents/tests/test_module_7_3.py"
+            },
+            4: {
+                "title": "Gęstość i całkowanie numeryczne (SciPy)",
+                "lesson": """
+Witaj w zadaniu 7.4!
+Zaimplementuj dwie funkcje:
+1. `get_normal_pdf(z)` - zwraca wartość gęstości prawdopodobieństwa standardowego rozkładu normalnego dla punktu `z`.
+2. `integrate_normal_density(a, b)` - oblicza i zwraca wartość całki oznaczonej (prawdopodobieństwa) z gęstości standardowego rozkładu normalnego w przedziale od `a` do `b`.
+Użyj do tego biblioteki SciPy (`scipy.stats.norm` oraz `scipy.integrate.quad`).
+
+Kod uzupełnij w exercises/module_7/task_4.py.
+""",
+                "theory": """
+=== SciPy: Statystyka i Całkowanie ===
+
+Funkcja gęstości rozkładu normalnego (PDF): `scipy.stats.norm.pdf(z)`
+Całkowanie numeryczne (quad):
+`result, error = scipy.integrate.quad(func, a, b)`
+Gdzie `func` to całkowana funkcja.
+""",
+                "hint": "Użyj scipy.stats.norm.pdf w obu funkcjach. W integrate_normal_density przekaż tę funkcję do quad i zwróć tylko pierwszy element wyniku (całkę).",
+                "template": """# -*- coding: utf-8 -*-
+from scipy.stats import norm
+from scipy.integrate import quad
+
+def get_normal_pdf(z: float) -> float:
+    \"\"\"
+    Zwraca wartość gęstości prawdopodobieństwa standardowego rozkładu normalnego dla z.
+    \"\"\"
+    # TWÓJ KOD TUTAJ
+    pass
+
+def integrate_normal_density(a: float, b: float) -> float:
+    \"\"\"
+    Oblicza całkę z gęstości standardowego rozkładu normalnego od a do b.
+    \"\"\"
+    # TWÓJ KOD TUTAJ
+    pass
+""",
+                "exercise_path": "exercises/module_7/task_4.py",
+                "test_path": ".agents/tests/test_module_7_4.py"
             }
         }
     },
