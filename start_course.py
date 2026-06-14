@@ -251,7 +251,7 @@ def display_ai_instructions():
     print("\033[95mPOMOC AGENTA AI (ANTIGRAVITY)\033[0m")
     print("=" * 60)
     print("Pracujesz w parze z agentem Antigravity. Jeśli utkniesz:")
-    print("1. Otwórz okno czatu z Antigravity.")
+    print("1. Otwórz CLI Antigravity komendą agy.")
     print("2. Poproś go o pomoc, np.:")
     print("   - 'Antigravity, wytłumacz mi dokładniej teorię do Zadania 1.1'")
     print("   - 'Antigravity, pomóż mi zrozumieć błędy z pliku .agents/test_run.log'")

@@ -33,17 +33,17 @@ Jeśli jeszcze nie masz przygotowanego środowiska WSL na Windows, wykonaj poni�
 
 ## 🤖 Praca z Asystentem Antigravity w WSL
 
-Jako uczeń będziesz pracował bezpośrednio w parze z agentem **Antigravity**. Agent pomoże Ci w zrozumieniu teorii ekonomicznej, podpowie optymalne podejście programistyczne oraz pomoże zdebugować błędy.
+JAS (Jako Uczeń) będziesz pracował bezpośrednio w parze z agentem **Antigravity** poprzez interaktywne CLI platformy.
 
 ### Jak współpracować z Antigravity?
-1. **Zainicjuj Antigravity** w katalogu głównym projektu w WSL:
+1. **Zainicjuj Antigravity CLI** w katalogu głównym projektu w WSL za pomocą komendy:
    ```bash
-   antigravity
+   agy
    ```
 2. **Zlecanie zadań agentowi**:
    Możesz poprosić Antigravity o wsparcie w dowolnym momencie. Przykładowe zapytania:
-   * *„Antigravity, wyjaśnij mi matematyczną intuicję stojącą za NPV (Zadanie 1.1).”*
-   * *„Antigravity, spójrz na plik exercises/module_2/task_1.py i wskaż, dlaczego wyliczona zmienność (volatility) różni się od oczekiwanej.”*
+   * *„Antigravity, wyjaśnij mi matematyczną intuicję stojącą za NPV (Zadanie 1.3).”*
+   * *„Antigravity, spójrz na plik exercises/module_2/task_1.py i wskaż, dlaczego moja klasyfikacja nie działa.”*
    * *„Antigravity, pomóż mi przeanalizować błędy z pliku logów .agents/test_run.log.”*
 3. **Automatyczne śledzenie kontekstu**:
    Antigravity ma dostęp do pliku stanu `.agents/course_state.json` oraz backlogu `task.md`. Kiedy zapytasz go o postępy lub kolejne zadania, automatycznie odczyta te dane i poprowadzi Cię dalej.
