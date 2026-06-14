@@ -21,7 +21,6 @@ Twoim zadaniem jest zaimplementowanie dwóch funkcji w pliku exercises/module_1/
 1. Funkcja print() i zwracanie wartości (return):
    Funkcje to wydzielone fragmenty kodu. Słowo kluczowe `return` przekazuje wynik działania funkcji na zewnątrz.
    W Pythonie teksty zapisujemy w cudzysłowach (np. "Hello, World!" lub 'Hello, World!').
-   Przykład funkcji zwracającej tekst:
    def przywitanie():
        return "Witaj!"
 
@@ -218,7 +217,7 @@ Wskazówki implementacyjne:
    `df = pd.DataFrame({'price': prices})`
 2. Oblicz prostą stopę zwrotu:
    `df['simple_return'] = df['price'].pct_change()`
-3. Oblicz logarytmiczna stopę zwrotu za pomocą NumPy:
+3. Oblicz logarytmiczną stopę zwrotu za pomocą NumPy:
    `df['log_return'] = np.log(df['price'] / df['price'].shift(1))`
 4. Wylicz statystyki:
    `mean_return = df['simple_return'].mean()`
@@ -232,19 +231,90 @@ import numpy as np
 def analyze_stock_returns(prices: list) -> tuple:
     \"\"\"
     Tworzy DataFrame z cenami akcji i oblicza stopy zwrotu.
-    Wejście: prices - lista cen akcji (kolejne dni)
-    Wyjście: tuple (df, mean_return, volatility)
-       - df: DataFrame z kolumnami: 'price', 'simple_return', 'log_return'
-       - mean_return: średnia prosta stopa zwrotu (ignorując wartość NaN na początku)
-       - volatility: odchylenie standardowe prostej stopy zwrotu (ignorując wartość NaN)
-    
-    Uwaga: Pierwszy wiersz stóp zwrotu będzie NaN (brak ceny z dnia poprzedniego).
     \"\"\"
     # TWÓJ KOD TUTAJ
     pass
 """,
                 "exercise_path": "exercises/module_2/task_1.py",
                 "test_path": ".agents/tests/test_module_2.py"
+            },
+            2: {
+                "title": "Fuzja danych makro- i mikroekonomicznych (Merge/Join)",
+                "lesson": """
+Witaj w zadaniu 2.2!
+W analizie ekonomicznej często musimy połączyć dane mikroekonomiczne (np. ceny akcji spółki lub jej wyniki) z danymi makroekonomicznymi (np. stopy procentowe banku centralnego, PKB lub stopa inflacji).
+Twoim zadaniem jest połączenie dwóch DataFrame'ów po kolumnie 'data' z użyciem złączenia typu 'left'.
+
+Uzupełnij kod w exercises/module_2/task_2.py.
+""",
+                "theory": """
+=== Łączenie tabel w Pandas (pd.merge) ===
+
+Funkcja `pd.merge` pozwala na łączenie ramki danych (DataFrame) na podstawie wspólnych kolumn (kluczy):
+`df_merged = pd.merge(df_lewy, df_prawy, on='nazwa_kolumny', how='typ_złączenia')`
+
+Parametr `how` decyduje o rodzaju złączenia:
+- `'inner'`: tylko wiersze, których klucze występują w obu tabelach.
+- `'left'`: wszystkie wiersze z lewej tabeli oraz dopasowane z prawej (brakujące w prawej zostaną uzupełnione jako NaN).
+- `'right'`: analogicznie do left, ale zachowuje prawą tabelę.
+- `'outer'`: zachowuje wszystkie wiersze z obu tabel.
+""",
+                "hint": """
+Wskazówki implementacyjne:
+Użyj `pd.merge`:
+`return pd.merge(micro_df, macro_df, on='data', how='left')`
+""",
+                "template": """# -*- coding: utf-8 -*-
+import pandas as pd
+
+def merge_macro_micro(micro_df: pd.DataFrame, macro_df: pd.DataFrame) -> pd.DataFrame:
+    \"\"\"
+    Łączy micro_df z macro_df po kolumnie 'data' za pomocą left join.
+    \"\"\"
+    # TWÓJ KOD TUTAJ
+    pass
+""",
+                "exercise_path": "exercises/module_2/task_2.py",
+                "test_path": ".agents/tests/test_module_2_2.py"
+            },
+            3: {
+                "title": "Agregacja i grupowanie portfela inwestycyjnego",
+                "lesson": """
+Witaj w zadaniu 2.3!
+Agregacja to klucz do analizy dużych zbiorów danych. W finansach często chcemy pogrupować aktywa w portfelu według klasy aktywów lub sektora gospodarki i obliczyć łączne statystyki.
+Twoim zadaniem jest pogrupowanie portfela po kolumnie 'sektor' i obliczenie:
+1. Całkowitej wartości portfela w każdym sektorze (suma kolumny 'wartosc').
+2. Średniej stopy zwrotu w każdym sektorze (średnia kolumny 'stopa_zwrotu').
+
+Uzupełnij kod w exercises/module_2/task_3.py.
+""",
+                "theory": """
+=== Grupowanie danych (groupby) i agregacja ===
+
+Metoda `.groupby()` pozwala na dzielenie danych na grupy na podstawie wartości w jednej lub wielu kolumnach.
+Po pogrupowaniu stosujemy metodę `.agg()` do obliczenia statystyk:
+`df_grouped = df.groupby('kolumna_grupujaca').agg({'kolumna_1': 'metoda_1', 'kolumna_2': 'metoda_2'})`
+
+Przykład:
+`df.groupby('kraj').agg({'populacja': 'sum', 'pkb_per_capita': 'mean'})`
+""",
+                "hint": """
+Wskazówki implementacyjne:
+Pogrupuj po 'sektor' i użyj agregacji:
+`return portfolio_df.groupby('sektor').agg({'wartosc': 'sum', 'stopa_zwrotu': 'mean'})`
+""",
+                "template": """# -*- coding: utf-8 -*-
+import pandas as pd
+
+def aggregate_portfolio(portfolio_df: pd.DataFrame) -> pd.DataFrame:
+    \"\"\"
+    Grupuje portfolio_df po 'sektor' i oblicza sumę 'wartosc' oraz średnią 'stopa_zwrotu'.
+    \"\"\"
+    # TWÓJ KOD TUTAJ
+    pass
+""",
+                "exercise_path": "exercises/module_2/task_3.py",
+                "test_path": ".agents/tests/test_module_2_3.py"
             }
         }
     },
@@ -306,18 +376,185 @@ import numpy as np
 def clean_macro_data(file_path: str) -> pd.DataFrame:
     \"\"\"
     Wczytuje i oczyszcza dane makroekonomiczne z pliku CSV.
-    1. Wczytaj CSV.
-    2. Oczyść kolumnę 'PKB_usd' (usuń '$', ',', spacje i rzutuj na float).
-    3. Zastąp wartości inflacji równe -999.0 wartością np.nan.
-    4. Uzupełnij braki w kolumnie 'Inflacja' średnią z tej kolumny.
-    5. Usuń wiersze z brakującą wartością (NaN) w 'Kraj' lub 'PKB_usd'.
-    6. Zwróć oczyszczony DataFrame.
     \"\"\"
     # TWÓJ KOD TUTAJ
     pass
 """,
                 "exercise_path": "exercises/module_3/task_1.py",
                 "test_path": ".agents/tests/test_module_3.py"
+            },
+            2: {
+                "title": "Zaawansowana imputacja braków danych (NaN)",
+                "lesson": """
+Witaj w zadaniu 3.2!
+Wcześniej uzupełnialiśmy braki średnią z całej kolumny. Jednak w ekonomii kraje o podobnym profilu (np. z tego samego kontynentu) mają bliższe wskaźniki. Uzupełnianie braków średnią globalną zniekształca strukturę.
+Zaimplementuj bardziej zaawansowaną imputację: uzupełnij brakujące wartości w kolumnie 'PKB' średnią wartością z tej samej kolumny obliczoną w ramach danej grupy 'kontynent'.
+
+Kod uzupełnij w exercises/module_3/task_2.py.
+""",
+                "theory": """
+=== Grupowanie i transformacja (transform) ===
+
+Metoda `.transform()` pozwala wykonać operację w ramach grup wyznaczonych przez `groupby`, zwracając obiekt o takim samym rozmiarze jak oryginalny DataFrame. Jest to idealne do imputacji grupowej.
+
+Wzór:
+`df['PKB'] = df.groupby('kontynent')['PKB'].transform(lambda x: x.fillna(x.mean()))`
+
+Lambda wyrażenie pobiera grupę `x` (kolumnę dla danego kontynentu) i wywołuje na niej `.fillna(x.mean())`, co uzupełnia braki średnią tylko z tej grupy.
+""",
+                "hint": """
+Wskazówki implementacyjne:
+Zastosuj transformację grupową:
+`df['PKB'] = df.groupby('kontynent')['PKB'].transform(lambda x: x.fillna(x.mean()))`
+`return df`
+""",
+                "template": """# -*- coding: utf-8 -*-
+import pandas as pd
+
+def impute_missing_gdp(df: pd.DataFrame) -> pd.DataFrame:
+    \"\"\"
+    Uzupełnia braki w kolumnie 'PKB' średnią wartością dla danego kontynentu.
+    \"\"\"
+    # TWÓJ KOD TUTAJ
+    pass
+""",
+                "exercise_path": "exercises/module_3/task_2.py",
+                "test_path": ".agents/tests/test_module_3_2.py"
+            },
+            3: {
+                "title": "Detekcja anomalii (outliers) za pomocą Z-Score",
+                "lesson": """
+Witaj w zadaniu 3.3!
+Błędy wprowadzania danych rynkowych potrafią mocno zniekształcić analizę statystyczną. Do wykrywania wartości skrajnych (outliers) często używa się wskaźnika Z-Score.
+Z-Score mówi o tym, o ile odchyleń standardowych dana wartość odbiega od średniej:
+Z = (x - mean) / std
+
+Twoim zadaniem jest przefiltrowanie tabeli i zwrócenie DataFrame zwierającego wyłącznie anomalie (outliers) dla wskazanej kolumny, czyli wiersze, dla których wartość bezwzględna Z-Score jest większa niż podany próg (threshold).
+
+Kod uzupełnij w exercises/module_3/task_3.py.
+""",
+                "theory": """
+=== Obliczanie Z-Score i filtrowanie anomalii ===
+
+Wzór na obliczenie Z-Score dla kolumny w Pandas:
+`mean = df[column].mean()`
+`std = df[column].std()`
+`z_score = (df[column] - mean) / std`
+
+Następnie filtrujemy wiersze spełniające warunek:
+`abs(z_score) > threshold`
+""",
+                "hint": """
+Wskazówki implementacyjne:
+1. Wylicz średnią: `m = df[column].mean()`
+2. Wylicz odchylenie standardowe: `s = df[column].std()`
+3. Oblicz z_score: `z = (df[column] - m) / s`
+4. Zwróć wiersze, gdzie `abs(z) > threshold`: `return df[abs(z) > threshold]`
+""",
+                "template": """# -*- coding: utf-8 -*-
+import pandas as pd
+
+def detect_outliers_zscore(df: pd.DataFrame, column: str, threshold: float = 3.0) -> pd.DataFrame:
+    \"\"\"
+    Zwraca podzbiór wierszy df stanowiących wartości odstające (outliers) w kolumnie column.
+    \"\"\"
+    # TWÓJ KOD TUTAJ
+    pass
+""",
+                "exercise_path": "exercises/module_3/task_3.py",
+                "test_path": ".agents/tests/test_module_3_3.py"
+            }
+        }
+    },
+    4: {
+        "title": "Moduł 4: Swarm & AI Automation",
+        "tasks": {
+            1: {
+                "title": "Cykliczne sprawdzanie i logowanie danych (Scheduler)",
+                "lesson": """
+Witaj w Module 4! Automatyzacja to serce systemów agentowych. Agent musi potrafić samodzielnie i cyklicznie wykonywać operacje (np. pobieranie kursów walut).
+W tym zadaniu zaimplementujesz prosty harmonogram zadań w Pythonie.
+Funkcja `schedule_data_check(check_func, interval_sec, max_iterations)` powinna cyklicznie wywoływać przekazaną funkcję `check_func` co określony czas (`interval_sec`), maksymalnie `max_iterations` razy, i zwracać listę z wynikami tych uruchomień.
+
+Kod uzupełnij w exercises/module_4/task_1.py.
+""",
+                "theory": """
+=== Tworzenie pętli czasowych w Pythonie ===
+
+Do wstrzymania wykonywania programu na określony czas służy funkcja `time.sleep(seconds)` z modułu `time`.
+
+Struktura pętli wykonującej się określoną liczbę razy z opóźnieniem:
+```python
+results = []
+for i in range(max_iterations):
+    val = check_func()
+    results.append(val)
+    if i < max_iterations - 1:  # Nie śpij po ostatnim wykonaniu
+        time.sleep(interval_sec)
+return results
+```
+""",
+                "hint": """
+Wskazówki implementacyjne:
+Zaimportuj `time`.
+Stwórz pustą listę. Użyj pętli `for _ in range(max_iterations):`.
+Wywołaj `check_func()`, dodaj wynik do listy.
+Jeśli to nie jest ostatnia iteracja, wywołaj `time.sleep(interval_sec)`.
+Zwróć listę wyników.
+""",
+                "template": """# -*- coding: utf-8 -*-
+import time
+
+def schedule_data_check(check_func, interval_sec: int, max_iterations: int) -> list:
+    \"\"\"
+    Cyklicznie wywołuje check_func co interval_sec, max_iterations razy.
+    Zwraca listę wyników.
+    \"\"\"
+    # TWÓJ KOD TUTAJ
+    pass
+""",
+                "exercise_path": "exercises/module_4/task_1.py",
+                "test_path": ".agents/tests/test_module_4_1.py"
+            },
+            2: {
+                "title": "Delegowanie zadań do wyspecjalizowanych subagentów",
+                "lesson": """
+Witaj w zadaniu 4.2!
+W architekturze wieloagentowej (Multi-Agent Swarm) zadania użytkownika są analizowane, a następnie kierowane (rutowane) do wyspecjalizowanych jednostek pomocniczych (subagentów).
+Zaimplementuj prosty router żądań. Funkcja `delegate_to_subagent(user_request)` powinna analizować tekst:
+- Jeśli żądanie zawiera słowa 'statystyka' lub 'analiza': kieruje do agenta statystyk, zwracając tekst "Delegowano do: Agent Statystyczny".
+- Jeśli żądanie zawiera słowa 'wykres' lub 'wizualizacja': kieruje do agenta graficznego, zwracając tekst "Delegowano do: Agent Wizualizacji".
+- W pozostałych przypadkach: zwraca tekst "Delegowano do: General Agent".
+
+Kod uzupełnij w exercises/module_4/task_2.py.
+""",
+                "theory": """
+=== Dopasowywanie wzorców tekstowych i instrukcje warunkowe ===
+
+W analizie intencji użytkownika najprostszym podejściem jest sprawdzenie obecności słów kluczowych przy użyciu operatora `in` oraz zamiany tekstu na małe litery za pomocą `.lower()`, aby wyszukiwanie było niewrażliwe na wielkość liter.
+
+Przykład:
+`if "analiza" in user_request.lower():`
+""",
+                "hint": """
+Wskazówki implementacyjne:
+1. Sprowadź tekst do małych liter: `req = user_request.lower()`
+2. Sprawdź warunki:
+   `if "statystyka" in req or "analiza" in req: return "Delegowano do: Agent Statystyczny"`
+   `elif "wykres" in req or "wizualizacja" in req: return "Delegowano do: Agent Wizualizacji"`
+   `else: return "Delegowano do: General Agent"`
+""",
+                "template": """# -*- coding: utf-8 -*-
+
+def delegate_to_subagent(user_request: str) -> str:
+    \"\"\"
+    Kieruje żądanie user_request do odpowiedniego agenta pomocniczego.
+    \"\"\"
+    # TWÓJ KOD TUTAJ
+    pass
+""",
+                "exercise_path": "exercises/module_4/task_2.py",
+                "test_path": ".agents/tests/test_module_4_2.py"
             }
         }
     }
