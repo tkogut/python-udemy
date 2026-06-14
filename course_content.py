@@ -930,5 +930,384 @@ def build_economic_report(data_summary: dict, filepath: str) -> None:
                 "test_path": ".agents/tests/test_module_8_3.py"
             }
         }
+    },
+    9: {
+        "title": "Moduł 9: Zaawansowane APIs i Jakość Danych w Ekonomii",
+        "tasks": {
+            1: {
+                "title": "Integracja z API NBP (NBPy)",
+                "lesson": """
+Witaj w zadaniu 9.1!
+Twoim zadaniem jest pobranie średniego kursu waluty (tabela A) z oficjalnego API NBP (np. NBPClient) na zadaną datę.
+Napisz funkcję `get_nbp_exchange_rate(currency_code, date_str)`.
+Powinna ona wysłać zapytanie pod adres:
+`http://api.nbp.pl/api/exchangerates/rates/a/{currency_code}/{date_str}/?format=json`
+i zwrócić kurs średni (`mid`) jako float.
+Jeśli wystąpi błąd HTTP (np. brak danych na ten dzień), zwróć `-1.0`.
+
+Kod uzupełnij w exercises/module_9/task_1.py.
+""",
+                "theory": """
+=== API NBP i NBPClient ===
+NBP udostępnia API w formacie JSON. Użyj modułu `requests` do pobrania danych:
+`response = requests.get(url)`
+`data = response.json()`
+Kurs znajduje się w `data['rates'][0]['mid']`.
+""",
+                "hint": "Użyj bloków try-except do obsługi requests.exceptions.RequestException lub sprawdzania status_code.",
+                "template": """# -*- coding: utf-8 -*-
+import requests
+
+def get_nbp_exchange_rate(currency_code: str, date_str: str) -> float:
+    \"\"\"
+    Pobiera kurs średni (mid) z tabeli A API NBP dla danej waluty i daty.
+    W przypadku błędu (np. 404 brak danych) zwraca -1.0.
+    \"\"\"
+    # TWÓJ KOD TUTAJ
+    pass
+""",
+                "exercise_path": "exercises/module_9/task_1.py",
+                "test_path": ".agents/tests/test_module_9_1.py"
+            },
+            2: {
+                "title": "Analiza Real-time i Vintages (FRED)",
+                "lesson": """
+Witaj w zadaniu 9.2!
+W analizie ekonomicznej kluczowa jest reprodukowalność – analizowanie danych dokładnie w takiej wersji, w jakiej były one dostępne w wybranym momencie w przeszłości (tzw. Vintages z ALFRED/FRED).
+Zaimplementuj funkcję `parse_fred_vintage(vintage_data, target_date)`, która ze słownika rewizji wybierze najbardziej aktualną wartość wskaźnika opublikowaną do dnia `target_date` włącznie.
+Słownik `vintage_data` ma postać: `{"obserwacja": {"data_publikacji": wartosc, ...}}`.
+Zwróć wartość dla zadanej obserwacji. Jeśli brak publikacji przed tą datą, zwróć `None`.
+
+Kod uzupełnij w exercises/module_9/task_2.py.
+""",
+                "theory": """
+=== Vintages (ALFRED/FRED) ===
+Pozwala to uniknąć błędu look-ahead w badaniach historycznych (backtestach).
+""",
+                "hint": "Filtruj klucze publikacji, które są mniejsze lub równe target_date, i wybierz najnowszą z nich.",
+                "template": """# -*- coding: utf-8 -*-
+
+def parse_fred_vintage(vintage_data: dict, observation_date: str, target_date: str) -> float:
+    \"\"\"
+    Zwraca wartość obserwacji z daty 'observation_date', która była opublikowana
+    najpóźniej do dnia 'target_date' włącznie. Jeśli brak danych, zwraca None.
+    \"\"\"
+    # TWÓJ KOD TUTAJ
+    pass
+""",
+                "exercise_path": "exercises/module_9/task_2.py",
+                "test_path": ".agents/tests/test_module_9_2.py"
+            },
+            3: {
+                "title": "Ewaluacja Jakości Danych (Data Quality Audit)",
+                "lesson": """
+Witaj w zadaniu 9.3!
+Jakość danych (Data Quality) w ekonomii oceniamy na podstawie 5 kryteriów: Accuracy, Completeness, Consistency, Timeliness, Accessibility.
+Zaimplementuj funkcję `audit_data_quality(df)` oceniającą DataFrame posiadający kolumny `Data` i `Wartosc`. Zwróć słownik z metrykami:
+- `Completeness`: udział niepustych wierszy (float od 0.0 do 1.0).
+- `Consistency`: czy wszystkie wartości w kolumnie 'Wartosc' są typu numerycznego (bool).
+- `Accuracy`: udział wartości dodatnich w kolumnie 'Wartosc' (float od 0.0 do 1.0).
+
+Kod uzupełnij w exercises/module_9/task_3.py.
+""",
+                "theory": """
+=== Metryki Jakości Danych ===
+Wysoka jakość danych to podstawa każdego wnioskowania statystycznego.
+""",
+                "hint": "Użyj `.notnull().mean()`, `pd.api.types.is_numeric_dtype()`, oraz sumy wartości > 0.",
+                "template": """# -*- coding: utf-8 -*-
+import pandas as pd
+
+def audit_data_quality(df: pd.DataFrame) -> dict:
+    \"\"\"
+    Przeprowadza audyt jakości danych na DataFrame i zwraca słownik z metrykami.
+    \"\"\"
+    # TWÓJ KOD TUTAJ
+    pass
+""",
+                "exercise_path": "exercises/module_9/task_3.py",
+                "test_path": ".agents/tests/test_module_9_3.py"
+            }
+        }
+    },
+    10: {
+        "title": "Moduł 10: Nowoczesny Stos Wydajnościowy i Bazy",
+        "tasks": {
+            1: {
+                "title": "Przetwarzanie w bibliotece Polars",
+                "lesson": """
+Witaj w zadaniu 10.1!
+Polars to niezwykle szybki silnik analizy danych napisany w Rust.
+Zaimplementuj funkcję `aggregate_with_polars(csv_path)`, która wczyta plik CSV za pomocą Polars, pogrupuje dane według kolumny `Kategoria` i obliczy średnią z kolumny `Wynik`.
+Wynik zwróć jako zwykły słownik w Pythonie `{kategoria: srednia}`.
+
+Kod uzupełnij w exercises/module_10/task_1.py.
+""",
+                "theory": """
+=== Polars DataFrame ===
+Polars jest często znacznie szybszy od Pandas. Używaj `pl.read_csv`, `.group_by`, `.agg` i `.mean()`.
+""",
+                "hint": "Użyj `df.group_by('Kategoria').agg(pl.col('Wynik').mean())` i przekształć na słownik za pomocą `.to_dicts()` lub zip.",
+                "template": """# -*- coding: utf-8 -*-
+import polars as pl
+
+def aggregate_with_polars(csv_path: str) -> dict:
+    \"\"\"
+    Wczytuje plik CSV za pomocą Polars, grupuje po 'Kategoria' i wylicza średnią z 'Wynik'.
+    Zwraca słownik.
+    \"\"\"
+    # TWÓJ KOD TUTAJ
+    pass
+""",
+                "exercise_path": "exercises/module_10/task_1.py",
+                "test_path": ".agents/tests/test_module_10_1.py"
+            },
+            2: {
+                "title": "Regresja Out-of-Core z DuckDB",
+                "lesson": """
+Witaj w zadaniu 10.2!
+DuckDB pozwala na błyskawiczne zapytania analityczne na dużych plikach bez ładowania ich w całości do pamięci RAM.
+Napisz funkcję `duckdb_query_and_regression(db_path)`, która połączy się z bazą DuckDB, pobierze dane z tabeli `ekonomia` i wyliczy parametry regresji liniowej (slope, intercept) dla modelu Y ~ X.
+Zwróć krotkę `(slope, intercept)`.
+
+Kod uzupełnij w exercises/module_10/task_2.py.
+""",
+                "theory": """
+=== DuckDB i Out-of-Core ===
+DuckDB świetnie sprawdza się w scenariuszach analitycznych na jednym komputerze.
+""",
+                "hint": "Możesz wyliczyć współczynniki bezpośrednio zapytaniem SQL lub pobrać dane za pomocą `.df()` i użyć NumPy.",
+                "template": """# -*- coding: utf-8 -*-
+import duckdb
+
+def duckdb_query_and_regression(db_path: str) -> tuple:
+    \"\"\"
+    Łączy się z bazą DuckDB, pobiera X i Y, i wylicza współczynniki regresji liniowej.
+    Zwraca (slope, intercept).
+    \"\"\"
+    # TWÓJ KOD TUTAJ
+    pass
+""",
+                "exercise_path": "exercises/module_10/task_2.py",
+                "test_path": ".agents/tests/test_module_10_2.py"
+            },
+            3: {
+                "title": "Kompilacja JIT (Numba)",
+                "lesson": """
+Witaj w zadaniu 10.3!
+Numba pozwala kompilować kod Pythona bezpośrednio do natywnego kodu maszynowego przy użyciu dekoratora `@jit`.
+Napisz funkcję `monte_carlo_option_pricing(s0, k, r, sigma, t, simulations)` obliczającą cenę europejskiej opcji call metodą Monte Carlo.
+Funkcja musi być udekorowana `@jit(nopython=True)` w celu optymalizacji.
+
+Kod uzupełnij w exercises/module_10/task_3.py.
+""",
+                "theory": """
+=== Kompilacja JIT i Numba ===
+Metody Monte Carlo w czystym Pythonie są powolne. Numba pozwala przyspieszyć pętle tysiąckrotnie.
+""",
+                "hint": "Użyj numpy wewnątrz funkcji skompilowanej przez numba do wygenerowania kroków rozkładu normalnego.",
+                "template": """# -*- coding: utf-8 -*-
+from numba import jit
+import numpy as np
+
+@jit(nopython=True)
+def monte_carlo_option_pricing(s0: float, k: float, r: float, sigma: float, t: float, simulations: int) -> float:
+    \"\"\"
+    Wycenia opcję call metodą Monte Carlo przy użyciu kompilacji JIT.
+    \"\"\"
+    # TWÓJ KOD TUTAJ
+    pass
+""",
+                "exercise_path": "exercises/module_10/task_3.py",
+                "test_path": ".agents/tests/test_module_10_3.py"
+            }
+        }
+    },
+    11: {
+        "title": "Moduł 11: Zaawansowana Ekonometria i Szeregi Czasowe",
+        "tasks": {
+            1: {
+                "title": "Regresja Panelowa (linearmodels)",
+                "lesson": """
+Witaj w zadaniu 11.1!
+Dane panelowe (wielowymiarowe) są powszechne w ekonomii.
+Zaimplementuj funkcję `estimate_panel_ols(df)`, która przyjmie DataFrame z indeksem typu MultiIndex (entity, time) i dopasuje model PanelOLS z efektami stałymi dla obiektów (Entity Effects).
+Zwróć współczynnik kierunkowy (parametr) dla zmiennej 'X'.
+
+Kod uzupełnij w exercises/module_11/task_1.py.
+""",
+                "theory": """
+=== Modele Panelowe ===
+Biblioteka `linearmodels` rozszerza `statsmodels` o regresje panelowe.
+Użyj: `PanelOLS(y, x, entity_effects=True).fit()`
+""",
+                "hint": "Dodaj stałą do zmiennej objaśniającej używając statsmodels.api.add_constant.",
+                "template": """# -*- coding: utf-8 -*-
+import pandas as pd
+from linearmodels.panel import PanelOLS
+from statsmodels.api import add_constant
+
+def estimate_panel_ols(df: pd.DataFrame) -> float:
+    \"\"\"
+    Estymuje model regresji panelowej PanelOLS z efektami stałymi dla obiektów.
+    Zwraca współczynnik przy zmiennej 'X'.
+    \"\"\"
+    # TWÓJ KOD TUTAJ
+    pass
+""",
+                "exercise_path": "exercises/module_11/task_1.py",
+                "test_path": ".agents/tests/test_module_11_1.py"
+            },
+            2: {
+                "title": "Modelowanie Zmienności GARCH (arch)",
+                "lesson": """
+Witaj w zadaniu 11.2!
+Model GARCH służy do modelowania zmienności warunkowej szeregów finansowych.
+Napisz funkcję `fit_garch_model(returns)`, która dopasuje model GARCH(1,1) do podanej listy stóp zwrotu.
+Zwróć parametry modelu: omega, alpha[1] i beta[1] jako krotkę `(omega, alpha, beta)`.
+
+Kod uzupełnij w exercises/module_11/task_2.py.
+""",
+                "theory": """
+=== Model GARCH ===
+Użyj pakietu `arch`:
+`am = arch_model(returns, vol='Garch', p=1, q=1)`
+`res = am.fit(disp='off')`
+""",
+                "hint": "Parametry odczytasz z `res.params['omega']`, `res.params['alpha[1]']` oraz `res.params['beta[1]']`.",
+                "template": """# -*- coding: utf-8 -*-
+from arch import arch_model
+
+def fit_garch_model(returns: list) -> tuple:
+    \"\"\"
+    Dopasowuje model GARCH(1,1) do stóp zwrotu i zwraca (omega, alpha, beta).
+    \"\"\"
+    # TWÓJ KOD TUTAJ
+    pass
+""",
+                "exercise_path": "exercises/module_11/task_2.py",
+                "test_path": ".agents/tests/test_module_11_2.py"
+            },
+            3: {
+                "title": "Filtry i Dekompozycja Szeregów Czasowych",
+                "lesson": """
+Witaj w zadaniu 11.3!
+Filtr Hodricka-Prescotta (HP) jest standardowym narzędziem do dekompozycji szeregu czasowego na trend i cykl koniunkturalny.
+Napisz funkcję `decompose_macro_series(series, lamb)`, która podzieli szereg za pomocą filtra HP.
+Zwróć krotkę `(trend, cycle)` jako listy.
+
+Kod uzupełnij w exercises/module_11/task_3.py.
+""",
+                "theory": """
+=== Filtr HP ===
+Statsmodels udostępnia filtr HP w module `statsmodels.tsa.filters.hp_filter.hpfilter`.
+""",
+                "hint": "Zwracane wartości z hpfilter to cykl i trend. Zwróć je przekonwertowane na listy.",
+                "template": """# -*- coding: utf-8 -*-
+from statsmodels.tsa.filters.hp_filter import hpfilter
+
+def decompose_macro_series(series: list, lamb: float) -> tuple:
+    \"\"\"
+    Dekonponuje szereg czasowy na trend i cykl za pomocą filtra HP.
+    Zwraca (trend, cycle) jako listy.
+    \"\"\"
+    # TWÓJ KOD TUTAJ
+    pass
+""",
+                "exercise_path": "exercises/module_11/task_3.py",
+                "test_path": ".agents/tests/test_module_11_3.py"
+            }
+        }
+    },
+    12: {
+        "title": "Moduł 12: Text as Data, Przyczynowość i Reprodukowalność",
+        "tasks": {
+            1: {
+                "title": "Analiza Sentymentu Raportów Finansowych",
+                "lesson": """
+Witaj w zadaniu 12.1!
+W nowoczesnej ekonomii tekst jest traktowany jako źródło danych.
+Zaimplementuj funkcję `calculate_sentiment_score(text, positive_words, negative_words)` tokenizującą tekst po spacjach, usuwającą znaki interpunkcyjne i wyliczającą indeks sentymentu:
+`(pos_count - neg_count) / (pos_count + neg_count + 1e-6)`.
+
+Kod uzupełnij w exercises/module_12/task_1.py.
+""",
+                "theory": """
+=== Sentyment w Ekonomii ===
+Używa się słowników specyficznych dla finansów w celu określenia tonu komunikatów.
+""",
+                "hint": "Sprowadź słowa do małych liter i usuń znaki interpunkcyjne za pomocą `.strip('.,?!;')`.",
+                "template": """# -*- coding: utf-8 -*-
+
+def calculate_sentiment_score(text: str, positive_words: list, negative_words: list) -> float:
+    \"\"\"
+    Wylicza wskaźnik sentymentu dla podanego tekstu na podstawie list słów.
+    \"\"\"
+    # TWÓJ KOD TUTAJ
+    pass
+""",
+                "exercise_path": "exercises/module_12/task_1.py",
+                "test_path": ".agents/tests/test_module_12_1.py"
+            },
+            2: {
+                "title": "Wnioskowanie Przyczynowe",
+                "lesson": """
+Witaj w zadaniu 12.2!
+Ekonomia opiera się na wnioskowaniu przyczynowym.
+Napisz funkcję `estimate_causal_effect(df)`, która przy użyciu biblioteki `dowhy` oszacuje wpływ zmiennej binarnej `T` na zmienną `Y` z uwzględnieniem zmiennej zakłócającej `W`.
+Zwróć oszacowany średni efekt traktowania (ATE).
+
+Kod uzupełnij w exercises/module_12/task_2.py.
+""",
+                "theory": """
+=== DoWhy i Modele Przyczynowe ===
+DoWhy dzieli wnioskowanie na 4 kroki: Model, Identify, Estimate, Refute.
+""",
+                "hint": "Zbuduj model przyczynowy podając graph='digraph { W -> T; W -> Y; T -> Y; }'. Użyj metody regresji liniowej do estymacji.",
+                "template": """# -*- coding: utf-8 -*-
+import pandas as pd
+import dowhy
+from dowhy import CausalModel
+
+def estimate_causal_effect(df: pd.DataFrame) -> float:
+    \"\"\"
+    Szacuje ATE (Average Treatment Effect) za pomocą DoWhy.
+    \"\"\"
+    # TWÓJ KOD TUTAJ
+    pass
+""",
+                "exercise_path": "exercises/module_12/task_2.py",
+                "test_path": ".agents/tests/test_module_12_2.py"
+            },
+            3: {
+                "title": "Automatyzacja Potoku Badawczego (DAG)",
+                "lesson": """
+Witaj w zadaniu 12.3!
+Reprodukowalne potoki analityczne modelowane są jako Directed Acyclic Graph (DAG).
+Zaimplementuj funkcję `run_research_pipeline(raw_data_path, clean_data_path)`, która odczyta surowe dane z `raw_data_path`, usunie wiersze z ujemną wartością w kolumnie `Wartosc`, zapisze wyczyszczony plik CSV do `clean_data_path` i zwróci `True`.
+
+Kod uzupełnij w exercises/module_12/task_3.py.
+""",
+                "theory": """
+=== DAG i Potoki Danych ===
+Dobre zaprojektowanie potoku danych gwarantuje, że wyniki analizy można odtworzyć jedną komendą.
+""",
+                "hint": "Użyj pandas do odczytu, filtracji i zapisu do CSV.",
+                "template": """# -*- coding: utf-8 -*-
+import pandas as pd
+
+def run_research_pipeline(raw_data_path: str, clean_data_path: str) -> bool:
+    \"\"\"
+    Wczytuje, czyści i zapisuje dane, symulując krok potoku DAG.
+    Zwraca True przy sukcesie.
+    \"\"\"
+    # TWÓJ KOD TUTAJ
+    pass
+""",
+                "exercise_path": "exercises/module_12/task_3.py",
+                "test_path": ".agents/tests/test_module_12_3.py"
+            }
+        }
     }
 }
+
