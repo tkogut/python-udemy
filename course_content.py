@@ -935,33 +935,42 @@ def build_economic_report(data_summary: dict, filepath: str) -> None:
         "title": "Moduł 9: Zaawansowane APIs i Jakość Danych w Ekonomii",
         "tasks": {
             1: {
-                "title": "Integracja z API NBP (NBPy)",
+                "title": "Integracja z API DBnomics",
                 "lesson": """
 Witaj w zadaniu 9.1!
-Twoim zadaniem jest pobranie średniego kursu waluty (tabela A) z oficjalnego API NBP (np. NBPClient) na zadaną datę.
-Napisz funkcję `get_nbp_exchange_rate(currency_code, date_str)`.
-Powinna ona wysłać zapytanie pod adres:
-`http://api.nbp.pl/api/exchangerates/rates/a/{currency_code}/{date_str}/?format=json`
-i zwrócić kurs średni (`mid`) jako float.
-Jeśli wystąpi błąd HTTP (np. brak danych na ten dzień), zwróć `-1.0`.
+Twoim zadaniem jest pobranie serii czasowej bezpośrednio z oficjalnego Web API platformy DBnomics.
+DBnomics to otwarta platforma agregująca miliony szeregów czasowych, z której korzystają instytucje takie jak OECD czy Banque de France.
+
+Napisz funkcję `get_dbnomics_series(series_id)`.
+Funkcja powinna wysłać zapytanie GET pod adres API DBnomics:
+`https://api.dbnomics.world/v22/series/{series_id}?format=json`
+i wyekstrahować dane z pobranego JSON-a.
+Zwróć listę słowników, gdzie każdy słownik ma klucze `period` (str) oraz `value` (float lub None).
+Zgodnie z "non-opinionated" filozofią DBnomics, jeśli wartość `value` w JSON wynosi `"NA"` lub jest pusta/None, zachowaj ją jako `None` (nie interpoluj brakujących danych!).
+W przypadku błędu połączenia lub braku serii, zwróć pustą listę `[]`.
 
 Kod uzupełnij w exercises/module_9/task_1.py.
 """,
                 "theory": """
-=== API NBP i NBPClient ===
-NBP udostępnia API w formacie JSON. Użyj modułu `requests` do pobrania danych:
+=== DBnomics Web API ===
+API DBnomics zwraca dane w formacie JSON. Struktura odpowiedzi dla serii czasowej zawiera:
+`data['series']['docs']` - lista słowników, z których każdy reprezentuje pojedynczą obserwację.
+Każda obserwacja zawiera klucz `period` (np. "2023-01") oraz `value` (która może być float, None lub napisem "NA").
+
+Przykład użycia biblioteki `requests`:
 `response = requests.get(url)`
 `data = response.json()`
-Kurs znajduje się w `data['rates'][0]['mid']`.
+`observations = data['series']['docs']`
 """,
-                "hint": "Użyj bloków try-except do obsługi requests.exceptions.RequestException lub sprawdzania status_code.",
+                "hint": "Przetwórz każdą obserwację z listy docs. Pamiętaj, aby rzutować wartość na float jeśli nie jest None ani 'NA'. Jeśli wartość to 'NA', ustaw None.",
                 "template": """# -*- coding: utf-8 -*-
 import requests
 
-def get_nbp_exchange_rate(currency_code: str, date_str: str) -> float:
+def get_dbnomics_series(series_id: str) -> list:
     \"\"\"
-    Pobiera kurs średni (mid) z tabeli A API NBP dla danej waluty i daty.
-    W przypadku błędu (np. 404 brak danych) zwraca -1.0.
+    Pobiera serię czasową z API DBnomics dla podanego identyfikatora series_id.
+    Zwraca listę słowników z kluczami 'period' i 'value'.
+    W przypadku błędu zwraca pustą listę [].
     \"\"\"
     # TWÓJ KOD TUTAJ
     pass

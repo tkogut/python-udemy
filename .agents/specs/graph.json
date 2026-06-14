@@ -13,12 +13,23 @@
       "label": "Konspekt Wiedzy",
       "type": "Expert Knowledge",
       "description": "Knowledge base note synchronized from NotebookLM: Konspekt Wiedzy"
+    },
+    {
+      "id": ".agents/specs/knowledge/DBnomics.md",
+      "label": "Dbnomics",
+      "type": "Expert Knowledge",
+      "description": "Knowledge base note synchronized from NotebookLM: Dbnomics"
     }
   ],
   "edges": [
     {
       "source": ".agents/specs/AGENTS-OS.md",
       "target": ".agents/specs/knowledge/Konspekt Wiedzy.md",
+      "relation": "governs_knowledge"
+    },
+    {
+      "source": ".agents/specs/AGENTS-OS.md",
+      "target": ".agents/specs/knowledge/DBnomics.md",
       "relation": "governs_knowledge"
     }
   ],

@@ -1,0 +1,61 @@
+Platforma danych ekonomicznych DBnomics: Kompleksowy raport informacyjny
+
+1. Definicja i misja platformy: Dane jako dobro publiczne
+
+DBnomics to zaawansowana, darmowa platforma agregująca publicznie dostępne dane ekonomiczne z całego świata. Z perspektywy architektury systemów informacyjnych, projekt ten stanowi odpowiedź na problem "silosów danych" oraz barier technicznych narzucanych przez kosztownych pośredników. Fundamentem misji DBnomics jest uznanie danych makroekonomicznych za dobro publiczne (public good) – zasób, który powinien być powszechnie dostępny dla administracji, badaczy oraz biznesu.
+
+Platforma realizuje ideę demokratyzacji dostępu do informacji poprzez standaryzację milionów szeregów czasowych do wspólnego formatu. Dzięki temu DBnomics pełni rolę centralnego węzła w ekosystemie otwartej nauki (Open Science), umożliwiając płynny przepływ danych między oficjalnymi instytucjami statystycznymi a końcowymi środowiskami analitycznymi.
+
+2. Zakres zasobów i techniczna filozofia przetwarzania
+
+Zasoby DBnomics obejmują miliony szeregów czasowych pozyskiwanych z szerokiego spektrum instytucji krajowych i międzynarodowych (urzędy statystyczne, banki centralne), firm prywatnych oraz od niezależnych badaczy. Zakres tematyczny jest kompleksowy i obejmuje m.in.:
+
+* populację i warunki życia,
+* energię i środowisko naturalne,
+* rolnictwo, finanse oraz handel międzynarodowy.
+
+Kluczowym elementem architektury DBnomics jest „nieopiniodawcza” (non-opinionated) filozofia przetwarzania danych. Nie jest to jedynie deklaracja polityczna, lecz świadomy wybór projektowy mający na celu zapewnienie pełnej proweniencji danych (data provenance). W praktyce oznacza to:
+
+* zachowanie oryginalnych kodów serii i zestawów danych zdefiniowanych przez dostawców,
+* rygorystyczny zakaz modyfikacji wartości numerycznych oraz brak interpolacji wartości brakujących (NA – not available),
+* prezentację danych w strukturze hierarchicznej (drzewa kategorii) identycznej z tą, którą stosuje pierwotny dostawca.
+
+3. Potok danych i fundamenty reprodukowalności (Reproducible Research)
+
+Platforma operuje w oparciu o zautomatyzowany potok danych (data pipeline), który wykorzystuje dedykowane programy pobierające – tzw. fetchery. Każdy dostawca posiada własny program, co pozwala na codzienną aktualizację wskaźników niemal w czasie rzeczywistym względem ich publikacji źródłowej.
+
+Z perspektywy metodologii naukowej najistotniejszą funkcjonalnością jest dostęp do historycznych rewizji (Access To Past Revisions). W ekonomii dane są często korygowane wstecznie (tzw. vintaged data). DBnomics, archiwizując każdą zmianę wprowadzoną przez dostawcę, eliminuje problem „czarnej skrzynki” w modelowaniu. Użytkownik ma dostęp do wersji danych, na których opierały się badania w przeszłości, co jest krytycznym wymogiem dla audytu wyników naukowych i tworzenia baz danych czasu rzeczywistego (analogicznie do koncepcji ALFRED w systemie FRED).
+
+Dostęp do zasobów możliwy jest poprzez stronę internetową (wyszukiwanie słów kluczowych, filtrowanie wymiarów, eksport do CSV/XLSX) lub – co jest standardem w profesjonalnej analizie – poprzez API.
+
+4. Integracja techniczna: DBnomics jako brama dla QuantEcon
+
+Współczesna analiza ekonomiczna odchodzi od ręcznego parsowania plików na rzecz zautomatyzowanych potoków typu data-to-report. DBnomics stanowi tutaj standard de facto, pełniąc rolę głównej bramy danych dla ekosystemu QuantEcon (stworzonego przez Thomasa J. Sargenta i Johna Stachurskiego).
+
+Kluczowe narzędzia deweloperskie obejmują:
+
+* Web API: Eliminuje potrzebę manualnego kopiowania danych i parsowania różnorodnych formatów (XML, Excel).
+* Oficjalne biblioteki klienckie: Dedykowane dla języków Python i R.
+* Wsparcie dla innych środowisk: Julia, Matlab, Stata, EViews oraz Gretl.
+
+Synergia z bibliotekami NumPy i Pandas w Pythonie pozwala na bezpośrednie zasilanie modeli ekonometrycznych. DBnomics wpisuje się w trend zastępowania narzędzi takich jak Excel i VBA przez nowoczesne biblioteki (np. linearmodels czy statsmodels), co jest promowane w zaawansowanym nauczaniu ekonomii ilościowej.
+
+5. Model operacyjny: Synergia Open Source i Cepremap
+
+DBnomics jest zarządzane przez Cepremap (Centre pour la recherche économique et ses applications) przy wsparciu instytucji takich jak PROGEDO. Wyjątkowa efektywność platformy – operującej na skromnym budżecie poniżej 200 000 EUR rocznie – wynika z zastosowania modelu Distributed Maintenance.
+
+Kod źródłowy fetcherów jest hostowany w otwartych repozytoriach na platformie GitLab. Społeczność badaczy i programistów współuczestniczy w utrzymaniu skryptów, co pozwala na skalowanie systemu do ogromnych wolumenów danych bez konieczności rozbudowy infrastruktury etatowej. Z rozwiązań tych korzystają prestiżowe instytucje, w tym:
+
+* OECD,
+* Bank Francji (Banque de France),
+* Francuska Dyrekcja Generalna Skarbu (DG Trésor).
+
+6. Aspekty prawne i suwerenność danych
+
+Model licencyjny DBnomics został zaprojektowany tak, aby zapewnić suwerenność danych pierwotnym dostawcom, jednocześnie promując ich otwartą agregację:
+
+* Status danych źródłowych: Podlegają one wyłącznie licencjom i warunkom użytkowania określonym przez oryginalnych dostawców. DBnomics nie przejmuje praw własności do tych danych.
+* Status agregatu (bazy danych): Zagregowane zbiory danych opracowane przez platformę są udostępniane na licencji Open Database License (ODbL). Chroni to DBnomics jako strukturę, zapewniając, że pochodne bazy pozostaną otwarte.
+* Status oprogramowania: Kod źródłowy (w tym fetchery na GitLabie) dystrybuowany jest głównie na licencji GNU Affero General Public License wersja 3 lub nowsza (AGPLv3+). Gwarantuje to, że wszelkie usprawnienia narzędzi wrócą do społeczności.
+
+Zastrzeżenie: DBnomics oraz Cepremap pełnią rolę agregatora technicznego i nie ponoszą odpowiedzialności za dokładność ani ciągłą dostępność danych publikowanych przez źródła pierwotne.
