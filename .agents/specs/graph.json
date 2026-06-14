@@ -7,11 +7,23 @@
       "label": "AGENTS-OS.md",
       "type": "Ultimate Source of Truth",
       "description": "Constitution of AGENTS-OS v5.0 governing all Swarm rules and system operations."
+    },
+    {
+      "id": ".agents/specs/knowledge/Konspekt Wiedzy.md",
+      "label": "Konspekt Wiedzy",
+      "type": "Expert Knowledge",
+      "description": "Knowledge base note synchronized from NotebookLM: Konspekt Wiedzy"
     }
   ],
-  "edges": [],
+  "edges": [
+    {
+      "source": ".agents/specs/AGENTS-OS.md",
+      "target": ".agents/specs/knowledge/Konspekt Wiedzy.md",
+      "relation": "governs_knowledge"
+    }
+  ],
   "metadata": {
-    "last_distillation": "2026-05-22",
+    "last_distillation": "2026-06-14",
     "source": "Inception Engine"
   }
 }
